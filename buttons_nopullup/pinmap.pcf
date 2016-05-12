@@ -1,0 +1,18 @@
+# example.pcf
+set_io --warn-no-port led1 B5
+set_io --warn-no-port led2 B4
+set_io --warn-no-port led3 A2
+set_io --warn-no-port led4 A1
+set_io --warn-no-port led5 C5
+set_io --warn-no-port led6 C4
+set_io --warn-no-port led7 B3
+set_io --warn-no-port led8 C3
+set_io --warn-no-port hwclk J3
+
+# NUMPAD pins (note: r4 is gnd, can't use)
+set_io --warn-no-port keypad_r1 J15
+set_io --warn-no-port keypad_r2 G14
+set_io --warn-no-port keypad_r3 K14
+set_io --warn-no-port keypad_c1 K15
+set_io --warn-no-port keypad_c2 M16
+set_io --warn-no-port keypad_c3 N16
