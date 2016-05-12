@@ -1,0 +1,4 @@
+# icestorm build files
+*.blif
+*.bin
+*.asc
