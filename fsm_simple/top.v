@@ -109,6 +109,9 @@ module top (
                     ledvals[2] <= 0;
                 end
                 end
+            default : begin
+                state <= STATE_RST;
+            end
         endcase
     end
 
