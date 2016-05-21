@@ -91,7 +91,7 @@ If successful, you will be able to compile any of the example projects by naviga
 The IceStorm toolchain is not supported on Windows operating systems. However, if you have a Windows computer (or any other operating system for which you are having difficulties installing the IceStorm toolchain), you may download a Xubuntu virtual machine image that we have created with the IceStorm toolchain pre-installed along with the example projects in this repository.  
 
 Installing VirtualBox:
-Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. 
+Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. You must also install the VirtualBox extension pack, listed here: https://www.virtualbox.org/wiki/Downloads to ensure that the USB pass through to your FPGA works. 
 
 Downloading the VM Image:
 Download our pre-made virtual machine image here: URL STILL TO COME and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
