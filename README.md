@@ -1,10 +1,50 @@
 # ICE40 HX8K Example Projects
-This repository contains example projects targeting the Lattice ICE40 HX8K FGPA and the Icestorm open-source synthesis toolchain described here: 
-http://www.clifford.at/icestorm/
+This repository contains example projects targeting the Lattice ICE40 HX8K FGPA and the Icestorm open-source synthesis toolchain.
 
-Additionally, several of these projects use a simple membrane keypad that can be purchased from Adafruit here:
-https://www.adafruit.com/product/419
-This keypad is attached so that pins 1 through 7 connect to the following I/O pins: J15  G14  K14  GND  K15  M16  N16. This will effectively disable row 4 of the keypad due to the unfortunate placing of the ground pins on the development board. 
+## Installing the required tools
+The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source Icestorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Bash like those described here: https://whatbox.ca/wiki/Bash_Shell_Commands. 
+
+### Installation on Linux
+These instructions are for installation on Ubuntu 14.04 or later. 
+
+Installing prerequisites:
+```
+sudo apt-get install build-essential clang bison flex libreadline-dev \
+                     gawk tcl-dev libffi-dev git mercurial graphviz   \
+                     xdot pkg-config python python3 libftdi-dev
+```
+Installing the IceStorm toolchain:
+```
+git clone https://github.com/cliffordwolf/icestorm.git icestorm
+cd icestorm
+make
+sudo make install
+```
+
+Installing Arachne-PNR for place and route:
+
+```
+git clone https://github.com/cseed/arachne-pnr.git arachne-pnr
+cd arachne-pnr
+make
+sudo make install
+```
+Installing Yosys for Verilog synthesis:
+```
+git clone https://github.com/cliffordwolf/yosys.git yosys
+cd yosys
+make
+sudo make install
+```
+
+If successful, you will be able to compile any of the example projects by navigating to the project folder and executing the command `make`.
+
+### Installation on OSX
+
+### Installation on Windows
+
+## Installing the keypad
+Several of these example projects use a simple membrane keypad that can be purchased from Adafruit here: https://www.adafruit.com/product/419 . For all projects in this repository, this keypad is attached so that pins 1 through 7 (when enumerated left to right as viewed from the top side of the keypad) connect to the following FGPA I/O pins in this order: J15  G14  K14  GND  K15  M16  N16. This will effectively disable row 4 of the keypad due to the unfortunate placing of the ground pins on the development board, meaning the keypad itself will only be able to recognize keys 1 through 9 and not '*', '0', or '#'.
 
 ## Example Projects
 ### blinky
