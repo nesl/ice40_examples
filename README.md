@@ -118,6 +118,10 @@ In order to compile an example project, navigate to that directory on your termi
 Note for OSX: If you are having difficulties programming a project onto the FPGA with `make burn`, see the section below on UART transmission under the UART project. 
 
 ## Example Projects List
+
+### blank
+This project does not do anything functional, but it serves as a starting point for creating your own projects. For convenience, the 8 LED outputs and hardware clock inputs are defined.
+
 ### blinky
 This is a simple project with a 32 bit 12 MHz counter. All 8 LEDs on the development board are used to illustrate binary counting on some of the higher bits in the counter. This is a good starting place to test that your Icestorm toolchain is up and running.
 
@@ -148,4 +152,13 @@ The process for viewing UART transmission on Mac OSX is the same as that of Linu
 
 Viewing UART transmission on Windows:
 If on a Windows machine (for viewing purposes only--i.e. this does not apply if you are using a VM on a Windows host), you must download a serial console program such as Realterm: http://realterm.sourceforge.net/, following their instructions to set up a Serial port with 8 bits, no parity, 1 stop bit, and 9600 baud rate. 
+
+## Project Design Process:
+In order to create your own project, start by copying the template provided in the blank project folder.  The general design process looks like this:
+-- Write your top-level Verilog code in top.v. Any additional Verilog files required can be placed at the same level as top.v (in the project folder).
+-- Modify your Makefile: change `PROJ` to be your project name, and if any additional Verilog files are required, they should follow the `FILES = top.v` line, using the format `FILES += newfile.v` where `newfile.v` is the name of any additional Verilog file you have written. You can use this syntax for however many files you need. 
+-- Modify pinmap.pcf. If any pins are required other than the input clock and LEDs, add a line to the pinmap.pcf file using the format `set_io --warn-no-port <wire_name> <physical pin name>`.
+-- Compile your project by running `make` from the project directory
+-- If your project successfully compiles, connect your FPGA over USB and type `make burn` to program the binary to your FPGA. 
+
 
