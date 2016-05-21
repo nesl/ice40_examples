@@ -39,7 +39,29 @@ sudo make install
 
 If successful, you will be able to compile any of the example projects by navigating to the project folder and executing the command `make`.
 
+Finally, create the file /etc/udev/rules.d/53-lattice-ftdi.rules with the following line in it. This will enable permissions for writing bitstreams to Lattice FPGA devices as a priveleged user:
+```
+ACTION=="add", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE:="666"
+```
+
 ### Installation on OSX
+Installation on Mac OSX is most easily achieved using Brew. If you have not installed Brew previously, follow the instructions here: http://brew.sh/. After installing Brew, follow the following steps.
+
+Install the dependencies
+```
+brew install bison
+brew install gawk
+brew install pkg-config
+brew install git
+brew install mercurial
+brew install graphviz
+brew install python
+brew install python3
+brew install libftdi0
+```
+Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`.
+
+
 
 ### Installation on Windows
 
