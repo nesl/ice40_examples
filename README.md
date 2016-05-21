@@ -1,8 +1,8 @@
 # ICE40 HX8K Example Projects
-This repository contains example projects targeting the Lattice ICE40 HX8K FGPA and the Icestorm open-source synthesis toolchain.
+This repository contains example projects targeting the Lattice ICE40 HX8K FGPA and the IceStorm open-source synthesis toolchain.
 
 ## Installing the required tools
-The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source Icestorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Bash like those described here: https://whatbox.ca/wiki/Bash_Shell_Commands. 
+The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source IceStorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Bash like those described here: https://whatbox.ca/wiki/Bash_Shell_Commands. 
 
 ### Installation on Linux
 These instructions are for installation on Ubuntu 14.04 or later. 
@@ -59,11 +59,45 @@ brew install python
 brew install python3
 brew install libftdi0
 ```
-Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`.
+Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`. As with Linux, the rest of the installation requires downloading several git repositories and compiling the source:
 
+Installing the IceStorm toolchain:
+```
+git clone https://github.com/cliffordwolf/icestorm.git icestorm
+cd icestorm
+make
+sudo make install
+```
 
+Installing Arachne-PNR for place and route:
+
+```
+git clone https://github.com/cseed/arachne-pnr.git arachne-pnr
+cd arachne-pnr
+make
+sudo make install
+```
+Installing Yosys for Verilog synthesis:
+```
+git clone https://github.com/cliffordwolf/yosys.git yosys
+cd yosys
+make
+sudo make install
+```
+
+If successful, you will be able to compile any of the example projects by navigating to the project folder and executing the command `make`.
 
 ### Installation on Windows
+The IceStorm toolchain is not supported on Windows operating systems. However, if you have a Windows computer (or any other operating system for which you are having difficulties installing the IceStorm toolchain), you may download a Xubuntu virtual machine image that we have created with the IceStorm toolchain pre-installed along with the example projects in this repository.  
+
+Installing VirtualBox:
+Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. 
+
+Downloading the VM Image:
+Download our pre-made virtual machine image here: <URL STILL TO COME> and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
+
+Start the virtual machine:
+Start the VirtualBox software. The virtual machine should appear in the list on the left. Click this image to highlight it, and then click start to power up the virtual machine. The username for this machine is "developer" and the administrative password is "verilogisfun". A recent snapshot of this repository can be found on the desktop. 
 
 ## Installing the keypad
 Several of these example projects use a simple membrane keypad that can be purchased from Adafruit here: https://www.adafruit.com/product/419 . For all projects in this repository, this keypad is attached so that pins 1 through 7 (when enumerated left to right as viewed from the top side of the keypad) connect to the following FGPA I/O pins in this order: J15  G14  K14  GND  K15  M16  N16. This will effectively disable row 4 of the keypad due to the unfortunate placing of the ground pins on the development board, meaning the keypad itself will only be able to recognize keys 1 through 9 and not '*', '0', or '#'.
