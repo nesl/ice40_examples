@@ -156,9 +156,13 @@ If on a Windows machine (for viewing purposes only--i.e. this does not apply if 
 ## Project Design Process:
 In order to create your own project, start by copying the template provided in the blank project folder.  The general design process looks like this:
 1.  Write your top-level Verilog code in top.v. Any additional Verilog files required can be placed at the same level as top.v (in the project folder).
+
 2.  Modify your Makefile: change `PROJ` to be your project name, and if any additional Verilog files are required, they should follow the `FILES = top.v` line, using the format `FILES += newfile.v` where `newfile.v` is the name of any additional Verilog file you have written. You can use this syntax for however many files you need. 
+
 3.  Modify pinmap.pcf. If any pins are required other than the input clock and LEDs, add a line to the pinmap.pcf file using the format `set_io --warn-no-port <wire_name> <physical pin name>`.
+
 4.  Compile your project by running `make` from the project directory
+
 5.  If your project successfully compiles, connect your FPGA over USB and type `make burn` to program the binary to your FPGA. 
 
 
