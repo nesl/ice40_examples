@@ -94,7 +94,7 @@ Installing VirtualBox:
 Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. 
 
 Downloading the VM Image:
-Download our pre-made virtual machine image here: <URL STILL TO COME> and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
+Download our pre-made virtual machine image here: URL STILL TO COME and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
 
 Start the virtual machine:
 Start the VirtualBox software. The virtual machine should appear in the list on the left. Click this image to highlight it, and then click start to power up the virtual machine. The username for this machine is "developer" and the administrative password is "verilogisfun". A recent snapshot of this repository can be found on the desktop. 
@@ -105,7 +105,7 @@ Several of these example projects use a simple membrane keypad that can be purch
 ## Downloading, compiling, and programming the example projects
 In order to download this repository, type `git clone https://github.com/nesl/ice40_examples.git ice40_examples` on the command line. Within the repository you will find a GPL license file, this readme, and several different example project folders such as "blinky." Within a given project folder, you will see:
 * top.v -- the highest level Verilog file, including all pin inputs (e.g. clocks and button lines) and outputs (e.g. LEDs)
-* <other modules.v> -- any other required modules (e.g. UART transmitters) referenced in top.v
+* (other modules.v) -- any other required modules (e.g. UART transmitters) referenced in top.v
 * pinmap.pcf -- the pin map file relating variable names referenced in top.v to physical I/O pins on the ICE40 HX8K. The syntax here is `set_io <wire_name> <physical pin name>`.  You can add the `--warn-no-port` option if you'd like the compiler to warn you if a specified pin does not exist on a given device.
 * Makefile -- this is a typical Unix Makefile that dictates the synthesis and programming flow. For the example projects, this file provides two commands of interest: `make` and `make burn`. `make` will compile your verilog project into a binary bitstream, and `make burn` will download this bitstream onto your FPGA device through USB. 
 * build/ -- this is a folder where all intermediate build files are stored -- e.g. netlists, ascii bitstream, binary bistream. 
