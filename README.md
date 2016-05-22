@@ -2,7 +2,7 @@
 This repository contains example projects targeting the Lattice ICE40 HX8K FGPA and the IceStorm open-source synthesis toolchain.
 
 ## Installing the required tools
-The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source IceStorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Bash like those described here: https://whatbox.ca/wiki/Bash_Shell_Commands. 
+The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source IceStorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Bash like those described here: https://whatbox.ca/wiki/Bash_Shell_Commands. However, if you do not wish to install the tools natively or are on a Windows machine then we have also provided a Virtual Machine image with a Linux/Ubuntu installation that you can run using VirtualBox.
 
 ### Installation on Linux
 These instructions are for installation on Ubuntu 14.04 or later. 
@@ -88,7 +88,11 @@ sudo make install
 If successful, you will be able to compile any of the example projects by navigating to the project folder and executing the command `make`.
 
 ### Installation on Windows
-The IceStorm toolchain is not supported on Windows operating systems. However, if you have a Windows computer (or any other operating system for which you are having difficulties installing the IceStorm toolchain), you may download a Xubuntu virtual machine image that we have created with the IceStorm toolchain pre-installed along with the example projects in this repository.  
+The IceStorm toolchain is not supported on Windows operating systems. However, you can still use the tools via a Virtual Machine as described in the next section.
+
+## Using the tools via a Virtual Machine
+
+if you have a Windows computer (or any other operating system for which you are having difficulties installing the IceStorm toolchain), you may download a Xubuntu virtual machine image that we have created with the IceStorm toolchain pre-installed along with the example projects in this repository.  
 
 Installing VirtualBox:
 Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. You must also install the VirtualBox extension pack, listed here: https://www.virtualbox.org/wiki/Downloads to ensure that the USB pass through to your FPGA works. 
@@ -164,5 +168,3 @@ In order to create your own project, start by copying the template provided in t
 4.  Compile your project by running `make` from the project directory
 
 5.  If your project successfully compiles, connect your FPGA over USB and type `make burn` to program the binary to your FPGA. 
-
-
