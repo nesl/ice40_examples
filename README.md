@@ -98,7 +98,7 @@ Installing VirtualBox:
 Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. You must also install the VirtualBox extension pack, listed here: https://www.virtualbox.org/wiki/Downloads to ensure that the USB pass through to your FPGA works. 
 
 Downloading the VM Image:
-Download our pre-made virtual machine image here: URL STILL TO COME and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
+Download our pre-made virtual machine image here: https://ucla.box.com/s/g14sa76xsa5w8qmd1u9dvy95y0jvolst and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
 
 Start the virtual machine:
 Start the VirtualBox software. The virtual machine should appear in the list on the left. Click this image to highlight it, and then click start to power up the virtual machine. The username for this machine is "developer" and the administrative password is "verilogisfun". A recent snapshot of this repository can be found on the desktop. 
