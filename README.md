@@ -58,6 +58,7 @@ brew install graphviz
 brew install python
 brew install python3
 brew install libftdi0
+brew install libffi
 ```
 Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`. As with Linux, the rest of the installation requires downloading several git repositories and compiling the source:
 
