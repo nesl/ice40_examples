@@ -76,21 +76,25 @@ module top (
     assign led3=ledval3;
     assign led4=ledval4;
 
-    always @(posedge rx) begin
-         ledval2 <= ~ledval2;
+    always @(posedge clk_9600) begin
+        if(uart_rxed) begin
+            uart_txbyte <= uart_rxbyte;
+            uart_send <= 1;
+            ledval4 <= ~ledval4;
+        end
+        else begin
+            uart_send <= 0;
+        end
+
+        if(uart_txed) begin
+            ledval3 <= ~ledval3;
+        end
+
+        if(rx) begin
+            ledval2 <= ~ledval2;
+        end
     end
 
-    always @(posedge uart_txed) begin
-         ledval3 <= ~ledval3;
-         //uart_send <= 0;
-    end
-
-    always @(posedge uart_rxed) begin
-         ledval4 <= ~ledval4;
-         // Here the 'echo' operation
-         uart_txbyte <= uart_rxbyte;
-         uart_send <= 1;
-    end
 
 
 endmodule
