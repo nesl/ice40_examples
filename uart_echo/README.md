@@ -9,15 +9,29 @@ An important parameter are the number of characters
 per second to be transmitted, i.e. BAUD. This example
 sets this to 9600 - which is slow. Under Linux, you may
 use the following commands to address the FPGA once the
-bistream was burnt to it:
+bitstream was burnt to it:
 
-  * minicom -b 9600 -D /dev/ttyUSB1   # or alternatively
-  * screen /dev/ttyUSB1
+  * sudo minicom -b 9600 -D /dev/ttyUSB1   # or alternatively
+  * sudo screen /dev/ttyUSB1
 
-The use of screen may sound surprising to many. To become
+If you need the 'sudo' depends on the permissions assigned
+to the device.  The use of screen may sound surprising to
+many. It is a multifunctional tool. To become
 familar with it is however a very good investment and
 highly encouraged. Minicom you leave with "CTRL-A x",
 screen with "CTRL-A d".
+
+Linux users may also run a small C program to perform the
+I/O with the device, i.e. to prepare a subsequent embedding
+of the device in programms running on the computer.
+  
+  * sudo ./host /dev/ttyUSB1 some text
+
+To evaluate the reliability of the communication, e.g. in a
+virtualised environment, we propose to use the here provided
+'host' utility repeatedly. The "run2" target of the Makefile
+for instance combines it with an invocation of "watch" for a
+manual inspection.
 
 The 'uart_echo' example was derived from the only writing
 example 'uart_transmission' of Paul Martin after an idea
