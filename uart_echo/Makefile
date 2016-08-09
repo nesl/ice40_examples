@@ -84,4 +84,4 @@ run2:	host
 	watch -n 0.2 sudo ./host /dev/ttyUSB1 some almost german-like long word
 
 clean:
-	rm -f build/* a.out
+	rm -f build/* a.out core
