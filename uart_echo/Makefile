@@ -36,7 +36,7 @@ FILEStest += uart_clock_top.v
 
 .PHONY: all clean burn
 
-all:$(BUILD)/$(PROJ).bin host
+all:$(BUILD)/$(PROJ)_$(DEVICE).bin host
 
 
 CFLAGS += -g
