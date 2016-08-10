@@ -61,9 +61,9 @@ $(BUILD)/$(PROJ)_$(DEVICE).bin: $(BUILD)/$(PROJ)_$(DEVICE).asc
 burn:   $(BUILD)/$(PROJ)_$(DEVICE).bin
 	iceprog $<
 
-iverilog: a.out
-a.out:  $(FILES)
-	iverilog $(FILES)
+iverilog: $(BUILD)/$(PROJ).iverilog
+$(BUILD)/$(PROJ).iverilog:  $(FILES)
+	iverilog -o $(BUILD)/$(PROJ).iverilog $(FILES)
 
 
 test:	$(BUILD)/$(PROJ)test.bin
