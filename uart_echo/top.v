@@ -26,6 +26,8 @@ module top (
     reg ledval3 = 0;
     reg ledval4 = 0;
 
+    wire clk_9600; // takes the clock triggeres generated in read
+
    // wire[1:0] state;
 
 /*
@@ -33,21 +35,11 @@ module top (
     assign led4 = ~state[0];
 */
 
-    // 9600 Hz clock generation (from 12 MHz)
-    parameter period_9600 = 32'd625;
-    wire clk_9600;
-    reg  clk_9600_reset=0;
-    uart_clock clock_9600 (
-        .hwclk(hwclk),
-        .reset(clk_9600_reset),
-        .period(period_9600),
-        .clk(clk_9600)
-    );
-
     // UART receiver module designed for
     // 8 bits, no parity, 1 stop bit. 
     uart_rx_8n1 receiver (
-        .clk (clk_9600),          // 9600 baud rate clock
+        .hwclk (hwclk),
+        .clk_9600 (clk_9600),     // 9600 baud rate clock, triggered by reads from host
         .rx (rx),                 // input UART rx pin
         .recvdata (uart_receive), // allow any incoming bytes
         .rxbyte (uart_rxbyte),    // byte received

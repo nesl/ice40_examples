@@ -15,9 +15,11 @@ module uart_clock_top (
         .hwclk(hwclk),
         .reset(clk_1_reset),
         .period(period_1),
-        .clk(clk_1),
-//        .led(led3)
+        .clk(clk_1)
+//     ,   .led(led1)
     );
     assign led4 = ~clk_1;
+    assign led3 = clk_1_reset;
+    assign led2 = ~clk_1_reset;
 
 endmodule

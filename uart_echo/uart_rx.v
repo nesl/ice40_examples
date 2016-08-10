@@ -1,7 +1,8 @@
 // 8N1 UART Module, transmit only
 
 module uart_rx_8n1 (
-    input  wire     clk,       // input clock
+    input  wire     hwclk,     // input clock
+    output wire     clk_9600,  // self-generated clock
     input  wire     rx,        // rx wire
     input  wire     recvdata,  // allow any bytes to come in
     output reg[7:0] rxbyte,    // incoming byte as output
@@ -22,8 +23,20 @@ module uart_rx_8n1 (
 
     //assign stateOut=state;
 
+    // 9600 Hz clock generation (from 12 MHz)
+    parameter period_9600 = 32'd625;
+    wire  clk_9600_reset=0;
+    uart_clock clock_9600 (
+        .hwclk(hwclk),
+        .reset(clk_9600_reset),
+        .period(period_9600),
+        .clk(clk_9600)
+    );
+
+    assign clk_9600_reset = ~rx; // whenever rx falls, start counting from 0
+
     /* always */
-    always @ (posedge clk) begin
+    always @ (posedge clk_9600) begin
 
         case (state)
 
