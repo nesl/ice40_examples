@@ -24,7 +24,7 @@ module uart_rx_8n1 (
     //assign stateOut=state;
 
     // 9600 Hz clock generation (from 12 MHz)
-    parameter period_9600 = 32'd625;
+    parameter period_9600 = 32'd624;
     wire  clk_9600_reset=0;
     uart_clock clock_9600 (
         .hwclk(hwclk),
