@@ -68,7 +68,7 @@ $(BUILD)/$(PROJ).iverilog:  $(FILES)
 
 test:	$(BUILD)/$(PROJ)test.bin
 $(BUILD)/$(PROJ)test.bin: Makefile $(FILEStest)
-	iverilog $(FILEStest)
+	iverilog -o $(BUILD)/test.a.out $(FILEStest)
 	mkdir -p $(BUILD)
 	yosys -p "synth_ice40 -top uart_clock_top -blif $(BUILD)/$(PROJ)test.blif" $(FILEStest)
 	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ)test.asc -p pinmap_$(FOOTPRINT).pcf $(BUILD)/$(PROJ)test.blif
