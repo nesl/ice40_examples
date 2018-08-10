@@ -1,5 +1,5 @@
 /* Top level module for keypad + UART demo */
-module top (
+module uart (
     // input hardware clock (12 MHz)
     hwclk, 
     // all LEDs
