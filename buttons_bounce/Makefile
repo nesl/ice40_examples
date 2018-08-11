@@ -1,5 +1,18 @@
 BBOUNCE := buttons_bounce
 
+ifndef BUILD
+.PHONY: all burn clean
+
+all:
+	$(MAKE) -C .. $(BBOUNCE)
+
+burn:
+	$(MAKE) -C .. burn-$(BBOUNCE)
+
+clean:
+	$(MAKE) -C .. $@
+endif
+
 VPATH += $(BBOUNCE)
 
 BBOUNCE_VSRC := $(BBOUNCE)/$(BBOUNCE).v

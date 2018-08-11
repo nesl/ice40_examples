@@ -1,5 +1,18 @@
 BLANK := blank
 
+ifndef BUILD
+.PHONY: all burn clean
+
+all:
+	$(MAKE) -C .. $(BLANK)
+
+burn:
+	$(MAKE) -C .. burn-$(BLANK)
+
+clean:
+	$(MAKE) -C .. $@
+endif
+
 VPATH += blank
 
 BLANK_VSRC := $(addprefix $(BLANK)/,$(BLANK).v)

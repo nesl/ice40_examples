@@ -1,3 +1,16 @@
+ifndef BUILD
+.PHONY: all burn clean
+
+all:
+	$(MAKE) -C .. blinky
+
+burn:
+	$(MAKE) -C .. burn-blinky
+
+clean:
+	$(MAKE) -C .. $@
+endif
+
 VPATH += blinky
 
 BLINKY_VSRC := blinky/blinky.v

@@ -1,5 +1,18 @@
 UART := uart_transmission
 
+ifndef BUILD
+.PHONY: all burn clean
+
+all:
+	$(MAKE) -C .. $(UART)
+
+burn:
+	$(MAKE) -C .. burn-uart
+
+clean:
+	$(MAKE) -C .. $@
+endif
+
 VPATH += $(UART)
 
 UART_VSRC := $(addprefix $(UART)/,uart.v uart_trx.v)

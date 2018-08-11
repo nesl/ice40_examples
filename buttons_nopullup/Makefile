@@ -1,5 +1,18 @@
 BNOPULLUP := buttons_nopullup
 
+ifndef BUILD
+.PHONY: all burn clean
+
+all:
+	$(MAKE) -C .. $(BNOPULLUP)
+
+burn:
+	$(MAKE) -C .. burn-$(BNOPULLUP)
+
+clean:
+	$(MAKE) -C .. $@
+endif
+
 VPATH += $(BNOPULLUP)
 
 BNOPULLUP_VSRC := $(BNOPULLUP)/$(BNOPULLUP).v

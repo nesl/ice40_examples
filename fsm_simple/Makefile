@@ -1,5 +1,18 @@
 FSM := fsm_simple
 
+ifndef BUILD
+.PHONY: all burn clean
+
+all:
+	$(MAKE) -C .. $(FSM)
+
+burn:
+	$(MAKE) -C .. burn-fsm
+
+clean:
+	$(MAKE) -C .. $@
+endif
+
 VPATH += $(FSM)
 
 FSM_VSRC := $(addprefix $(FSM)/,fsm.v button.v)

@@ -1,5 +1,18 @@
 BDEBOUNCE := buttons_debounce
 
+ifndef BUILD
+.PHONY: all burn clean
+
+all:
+	$(MAKE) -C .. $(BDEBOUNCE)
+
+burn:
+	$(MAKE) -C .. burn-$(BDEBOUNCE)
+
+clean:
+	$(MAKE) -C .. $@
+endif
+
 VPATH += $(BDEBOUNCE)
 
 BDEBOUNCE_VSRC := $(BDEBOUNCE)/$(BDEBOUNCE).v
