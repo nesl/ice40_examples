@@ -1,26 +1,16 @@
-# Project setup
-PROJ      = buttons
-BUILD     = ./build
-DEVICE    = 8k
-FOOTPRINT = ct256
+BNOPULLUP := buttons_nopullup
 
-# Files
-FILES = top.v
+VPATH += $(BNOPULLUP)
 
-.PHONY: all clean burn
+BNOPULLUP_VSRC := $(BNOPULLUP)/$(BNOPULLUP).v
+BNOPULLUP_SRC := $(BNOPULLUP_VSRC) $(BNOPULLUP)/$(BNOPULLUP)_ct256.pcf
+SRC += $(BNOPULLUP_SRC)
 
-all:
-	# if build folder doesn't exist, create it
-	mkdir -p $(BUILD)
-	# synthesize using Yosys
-	yosys -p "synth_ice40 -top top -blif $(BUILD)/$(PROJ).blif" $(FILES)
-	# Place and route using arachne
-	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ).asc -p pinmap.pcf $(BUILD)/$(PROJ).blif
-	# Convert to bitstream using IcePack
-	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
+.PHONY: $(BNOPULLUP)
 
-burn:
-	iceprog $(BUILD)/$(PROJ).bin
+$(BNOPULLUP): $(BUILD)/$(BNOPULLUP).bin
 
-clean:
-	rm build/*
+$(BNOPULLUP_SRC): $(BNOPULLUP)/Makefile
+	touch $@
+
+$(BUILD)/$(BNOPULLUP).blif: $(BNOPULLUP_VSRC)

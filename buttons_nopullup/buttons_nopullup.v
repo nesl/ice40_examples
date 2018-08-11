@@ -1,7 +1,7 @@
 /* Top level module for button demo without debouncing and with no
    pull-up resistor (not a good way of doing things!)
    */
-module top (
+module buttons_nopullup (
     // input hardware clock (12 MHz)
     hwclk, 
     // LED
