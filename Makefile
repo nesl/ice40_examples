@@ -1,8 +1,7 @@
 # Use := where you can, as it only gets evaluated once
 BUILD     := build
 # ?= allows the user to pass in a device on the command line
-DEVICE    ?= 1k
-#DEVICE   ?= 8k
+DEVICE   ?= 8k
 ifeq (8k,$(DEVICE))
 FOOTPRINT := ct256
 else
