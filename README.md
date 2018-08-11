@@ -112,13 +112,14 @@ https://www.dropbox.com/s/3qgiq0j6qj3910f/keypad_instructions.pdf?dl=0
 
 ## Downloading, compiling, and programming the example projects
 In order to download this repository, type `git clone https://github.com/nesl/ice40_examples.git ice40_examples` on the command line. Within the repository you will find a GPL license file, this readme, and several different example project folders such as "blinky." Within a given project folder, you will see:
-* top.v -- the highest level Verilog file, including all pin inputs (e.g. clocks and button lines) and outputs (e.g. LEDs)
-* (other modules.v) -- any other required modules (e.g. UART transmitters) referenced in top.v
-* pinmap.pcf -- the pin map file relating variable names referenced in top.v to physical I/O pins on the ICE40 HX8K. The syntax here is `set_io <wire_name> <physical pin name>`.  You can add the `--warn-no-port` option if you'd like the compiler to warn you if a specified pin does not exist on a given device.
-* Makefile -- this is a typical Unix Makefile that dictates the synthesis and programming flow. For the example projects, this file provides two commands of interest: `make` and `make burn`. `make` will compile your verilog project into a binary bitstream, and `make burn` will download this bitstream onto your FPGA device through USB. 
-* build/ -- this is a folder where all intermediate build files are stored -- e.g. netlists, ascii bitstream, binary bistream. 
+* `<folder_name>.v` -- the highest level Verilog file, including all pin inputs (e.g. clocks and button lines) and outputs (e.g. LEDs)
+* (`other_modules.v`) -- any other required modules (e.g. UART transmitters) referenced in `<folder_name>.v`
+* `<folder_name>_<footprint>.pcf` -- the pin map file relating variable names referenced in `<folder_name>.v` to physical I/O pins on the ICE40 HX8K. The syntax here is `set_io <wire_name> <physical pin name>`.  You can add the `--warn-no-port` option if you'd like the compiler to warn you if a specified pin does not exist on a given device.
+* `Makefile` -- this is a sub-makefile which is included by the top-level makefile, but can also be used on its own. For the example projects, this file provides two commands of interest: `make` and `make burn`. `make` will compile your verilog project into a binary bitstream, and `make burn` will download this bitstream onto your FPGA device through USB. 
 
 In order to compile an example project, navigate to that directory on your terminal.  Type `make` to compile the project. When this finishes, type `make burn` to load the compiled binary onto your FPGA, provided it's connected over USB.
+
+You can also type `make` in the top directory to compile all projects. To load a project onto your FPGA, use `make burn-<project>`.
 
 Note for OSX: If you are having difficulties programming a project onto the FPGA with `make burn`, see the section below on UART transmission under the UART project. 
 
@@ -160,12 +161,12 @@ If on a Windows machine (for viewing purposes only--i.e. this does not apply if 
 
 ## Project Design Process:
 In order to create your own project, start by copying the template provided in the blank project folder.  The general design process looks like this:
-1.  Write your top-level Verilog code in top.v. Any additional Verilog files required can be placed at the same level as top.v (in the project folder).
+1.  Write your top-level Verilog code in `<project>.v`. Any additional Verilog files required can be placed at the same level as `<project>.v` (in the project folder).
 
-2.  Modify your Makefile: change `PROJ` to be your project name, and if any additional Verilog files are required, they should follow the `FILES = top.v` line, using the format `FILES += newfile.v` where `newfile.v` is the name of any additional Verilog file you have written. You can use this syntax for however many files you need. 
+2.  Modify your Makefile: change all `BLANK` and `BLANK_*` variables to some project prefix. If any additional Verilog files are required, they should be added to `<prefix>_VSRC`. Remember to separate each file with spaces.
 
-3.  Modify pinmap.pcf. If any pins are required other than the input clock and LEDs, add a line to the pinmap.pcf file using the format `set_io --warn-no-port <wire_name> <physical pin name>`.
+3.  Modify `<project>_<footprint>.pcf`. `<footprint>` should be the package for your chip which is passed do `arachne-pnr`. The iCE40-HX8K-CT256 uses `ct256`, and the iCE40-HX1K-TQ144 uses `tq144`. For a full list of supported packages, see [the icestorm documentation](http://www.clifford.at/icestorm/#flags). If any pins are required other than the input clock and LEDs, add a line to the file using the format `set_io --warn-no-port <wire_name> <physical pin name>`.
 
-4.  Compile your project by running `make` from the project directory
+4.  Compile your project by running `make` from either the project or top-level directory.
 
-5.  If your project successfully compiles, connect your FPGA over USB and type `make burn` to program the binary to your FPGA. 
+5.  If your project successfully compiles, connect your FPGA over USB and type `make burn` from the project directory, or `make burn-<project>` from the top-level directory to program the binary to your FPGA. 
