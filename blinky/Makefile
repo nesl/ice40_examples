@@ -1,26 +1,14 @@
-# Project setup
-PROJ      = blinky
-BUILD     = ./build
-DEVICE    = 8k
-FOOTPRINT = ct256
+VPATH += blinky
 
-# Files
-FILES = top.v
+BLINKY_VSRC := blinky/blinky.v
+BLINKY_SRC := $(BLINKY_VSRC) blinky/blinky_ct256.pcf
+SRC += $(BLINKY_SRC)
 
-.PHONY: all clean burn
+.PHONY: blinky
 
-all:
-	# if build folder doesn't exist, create it
-	mkdir -p $(BUILD)
-	# synthesize using Yosys
-	yosys -p "synth_ice40 -top top -blif $(BUILD)/$(PROJ).blif" $(FILES)
-	# Place and route using arachne
-	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ).asc -p pinmap.pcf $(BUILD)/$(PROJ).blif
-	# Convert to bitstream using IcePack
-	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
+blinky: $(BUILD)/blinky.bin
 
-burn:
-	iceprog $(BUILD)/$(PROJ).bin
+$(BLINKY_SRC): blinky/Makefile
+	touch $@
 
-clean:
-	rm build/*
+$(BUILD)/blinky.blif: $(BLINKY_VSRC)
