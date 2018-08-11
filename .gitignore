@@ -35,3 +35,5 @@
 
 # matlab storage files
 *.mat
+
+build
