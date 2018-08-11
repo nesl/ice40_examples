@@ -12,7 +12,7 @@ endif
 # VSRC holds verilog sources
 VSRC := uart.v uart_trx.v
 # SRC holds all source files
-SRC := $(VSRC) pinmap_ct256.pcf pinmap_tq144.pcf
+SRC := $(VSRC) uart_ct256.pcf uart_tq144.pcf
 
 .PHONY: all clean burn FORCE
 
@@ -62,9 +62,12 @@ $(BUILD)/%.var: FORCE
 # Keep .var file around even though they are intermediate targets
 .PRECIOUS: $(BUILD)/%.var
 
+$(BUILD)/%: %
+	cp -f $< $@
+
 # Note that yosys does not run if you only change DEVICE, just things from here down
-%.asc: %.blif pinmap_$(FOOTPRINT).pcf $(BUILD)/DEVICE.var $(BUILD)/FOOTPRINT.var
-	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $@ -p pinmap_$(FOOTPRINT).pcf $<
+%.asc: %.blif %_$(FOOTPRINT).pcf $(BUILD)/DEVICE.var $(BUILD)/FOOTPRINT.var
+	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $@ -p $*_$(FOOTPRINT).pcf $<
 
 %.bin: %.asc
 	icepack $< $@
