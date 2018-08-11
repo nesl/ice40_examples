@@ -1,26 +1,16 @@
-# Project setup
-PROJ      = buttons
-BUILD     = ./build
-DEVICE    = 8k
-FOOTPRINT = ct256
+BDEBOUNCE := buttons_debounce
 
-# Files
-FILES = top.v
+VPATH += $(BDEBOUNCE)
 
-.PHONY: all clean burn
+BDEBOUNCE_VSRC := $(BDEBOUNCE)/$(BDEBOUNCE).v
+BDEBOUNCE_SRC := $(BDEBOUNCE_VSRC) $(BDEBOUNCE)/$(BDEBOUNCE)_ct256.pcf
+SRC += $(BDEBOUNCE_SRC)
 
-all:
-	# if build folder doesn't exist, create it
-	mkdir -p $(BUILD)
-	# synthesize using Yosys
-	yosys -p "synth_ice40 -top top -blif $(BUILD)/$(PROJ).blif" $(FILES)
-	# Place and route using arachne
-	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ).asc -p pinmap.pcf $(BUILD)/$(PROJ).blif
-	# Convert to bitstream using IcePack
-	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
+.PHONY: $(BDEBOUNCE)
 
-burn:
-	iceprog $(BUILD)/$(PROJ).bin
+$(BDEBOUNCE): $(BUILD)/$(BDEBOUNCE).bin
 
-clean:
-	rm build/*
+$(BDEBOUNCE_SRC): $(BDEBOUNCE)/Makefile
+	touch $@
+
+$(BUILD)/$(BDEBOUNCE).blif: $(BDEBOUNCE_VSRC)
