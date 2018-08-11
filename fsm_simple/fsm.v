@@ -1,7 +1,7 @@
 /* Top level module for button demo WITH debouncing
    This uses button 1 of the keypad when installed correctly.
    */
-module top (
+module fsm (
     // input hardware clock (12 MHz)
     hwclk, 
     // LED

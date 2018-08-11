@@ -1,27 +1,16 @@
-# Project setup
-PROJ      = fsm
-BUILD     = ./build
-DEVICE    = 8k
-FOOTPRINT = ct256
+FSM := fsm_simple
 
-# Files
-FILES = top.v
-FILES += button.v
+VPATH += $(FSM)
 
-.PHONY: all clean burn
+FSM_VSRC := $(addprefix $(FSM)/,fsm.v button.v)
+FSM_SRC := $(FSM_VSRC) $(FSM)/fsm_ct256.pcf
+SRC += $(FSM_SRC)
 
-all:
-	# if build folder doesn't exist, create it
-	mkdir -p $(BUILD)
-	# synthesize using Yosys
-	yosys -p "synth_ice40 -top top -blif $(BUILD)/$(PROJ).blif" $(FILES)
-	# Place and route using arachne
-	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ).asc -p pinmap.pcf $(BUILD)/$(PROJ).blif
-	# Convert to bitstream using IcePack
-	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
+.PHONY: $(FSM)
 
-burn:
-	iceprog $(BUILD)/$(PROJ).bin
+$(FSM): $(BUILD)/fsm.bin
 
-clean:
-	rm build/*
+$(FSM_SRC): $(FSM)/Makefile
+	touch $@
+
+$(BUILD)/fsm.blif: $(FSM_VSRC)
