@@ -2,7 +2,7 @@
    (not a good way of doing things!)
    This uses button 1 of the keypad when installed correctly.
    */
-module top (
+module buttons_bounce (
     // input hardware clock (12 MHz)
     hwclk, 
     // LED

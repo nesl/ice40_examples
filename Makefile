@@ -8,7 +8,7 @@ else
 FOOTPRINT := tq144
 endif
 
-MODULES := uart_transmission blank blinky
+MODULES := uart_transmission blank blinky buttons_bounce
 
 # SRC holds all source files
 SRC :=
