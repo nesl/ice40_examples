@@ -1,26 +1,16 @@
-# Project setup
-PROJ      = blank
-BUILD     = ./build
-DEVICE    = 8k
-FOOTPRINT = ct256
+BLANK := blank
 
-# Files
-FILES = top.v
+VPATH += blank
 
-.PHONY: all clean burn
+BLANK_VSRC := $(addprefix $(BLANK)/,$(BLANK).v)
+BLANK_SRC := $(BLANK_VSRC) $(addprefix $(BLANK)/,$(BLANK)_ct256.pcf)
+SRC += $(BLANK_SRC)
 
-all:
-	# if build folder doesn't exist, create it
-	mkdir -p $(BUILD)
-	# synthesize using Yosys
-	yosys -p "synth_ice40 -top top -blif $(BUILD)/$(PROJ).blif" $(FILES)
-	# Place and route using arachne
-	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ).asc -p pinmap.pcf $(BUILD)/$(PROJ).blif
-	# Convert to bitstream using IcePack
-	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
+.PHONY: $(BLANK)
 
-burn:
-	iceprog $(BUILD)/$(PROJ).bin
+blank: $(BUILD)/$(BLANK).bin
 
-clean:
-	rm build/*
+$(BLANK_SRC): $(BLANK)/Makefile
+	touch $@
+
+$(BUILD)/$(BLANK).blif: $(BLANK_VSRC)
