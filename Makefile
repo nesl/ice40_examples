@@ -53,13 +53,13 @@ FORCE:
 # If they are the same we don't
 # Anything which depends on $(BUILD)/DEVICE.var will only update if DEVICE changes
 $(BUILD)/%.var: FORCE
-	echo $($*) | cmp - $@ || echo $($*) > $@
+	@echo $($*) | cmp - $@ || echo $($*) > $@
 
 # Keep .var file around even though they are intermediate targets
 .PRECIOUS: $(BUILD)/%.var
 
 $(BUILD)/%: %
-	cp -f $< $@
+	ln -f $< $@
 
 # Note that yosys does not run if you only change DEVICE, just things from here down
 %.asc: %.blif %_$(FOOTPRINT).pcf $(BUILD)/DEVICE.var $(BUILD)/FOOTPRINT.var
