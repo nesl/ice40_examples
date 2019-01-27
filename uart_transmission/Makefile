@@ -24,6 +24,5 @@ SRC += $(UART_SRC)
 $(UART): $(BUILD)/uart.bin
 
 $(UART_SRC): $(UART)/Makefile
-	touch $@
 
 $(BUILD)/uart.blif: $(UART_VSRC)

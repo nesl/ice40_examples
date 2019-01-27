@@ -22,6 +22,5 @@ SRC += $(BLINKY_SRC)
 blinky: $(BUILD)/blinky.bin
 
 $(BLINKY_SRC): blinky/Makefile
-	touch $@
 
 $(BUILD)/blinky.blif: $(BLINKY_VSRC)

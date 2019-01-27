@@ -24,6 +24,5 @@ SRC += $(BLANK_SRC)
 blank: $(BUILD)/$(BLANK).bin
 
 $(BLANK_SRC): $(BLANK)/Makefile
-	touch $@
 
 $(BUILD)/$(BLANK).blif: $(BLANK_VSRC)

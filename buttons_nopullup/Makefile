@@ -24,6 +24,5 @@ SRC += $(BNOPULLUP_SRC)
 $(BNOPULLUP): $(BUILD)/$(BNOPULLUP).bin
 
 $(BNOPULLUP_SRC): $(BNOPULLUP)/Makefile
-	touch $@
 
 $(BUILD)/$(BNOPULLUP).blif: $(BNOPULLUP_VSRC)

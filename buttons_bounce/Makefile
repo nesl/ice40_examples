@@ -24,6 +24,5 @@ SRC += $(BBOUNCE_SRC)
 $(BBOUNCE): $(BUILD)/$(BBOUNCE).bin
 
 $(BBOUNCE_SRC): $(BBOUNCE)/Makefile
-	touch $@
 
 $(BUILD)/$(BBOUNCE).blif: $(BBOUNCE_VSRC)

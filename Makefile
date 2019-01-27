@@ -17,11 +17,6 @@ SRC :=
 
 all: $(MODULES)
 
-# Because our sources/pinmaps depend on the makefile
-# all targets will get rebuilt every time the makefile changes
-$(SRC): Makefile
-	touch $@
-
 $(BUILD):
 	mkdir -p $(BUILD)
 
@@ -71,3 +66,8 @@ clean:
 	rm -rf $(BUILD)
 
 include $(addsuffix /Makefile,$(MODULES))
+
+# Because our sources/pinmaps depend on the makefile
+# all targets will get rebuilt every time the makefile changes
+$(SRC): Makefile
+	touch $@

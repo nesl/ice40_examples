@@ -24,6 +24,5 @@ SRC += $(FSM_SRC)
 $(FSM): $(BUILD)/fsm.bin
 
 $(FSM_SRC): $(FSM)/Makefile
-	touch $@
 
 $(BUILD)/fsm.blif: $(FSM_VSRC)
