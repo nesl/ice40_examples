@@ -8,6 +8,12 @@ else
 FOOTPRINT := tq144
 endif
 
+ifdef VERBOSE
+Q :=
+else
+Q :=1
+endif
+
 MODULES := uart_transmission blank blinky buttons_bounce buttons_debounce buttons_nopullup fsm_simple
 
 # SRC holds all source files
@@ -31,7 +37,7 @@ $(BUILD):
 # $^ all non-order-only dependencies
 # $* the stem of an implicit rule -- what % matches in %.blif
 $(BUILD)/%.blif: %.v | $(BUILD)
-	yosys -p "synth_ice40 -top $* -blif $@" $^
+	yosys $(and $(Q),-q) -p "synth_ice40 -top $* -blif $@" $^
 
 # .PHONY causes targets to be rebuilt every make, and built even if there is an up-to-date file
 # Depending on a .PHONY target will cause the rule to be run every time
@@ -54,7 +60,7 @@ $(BUILD)/%: %
 
 # Note that yosys does not run if you only change DEVICE, just things from here down
 %.asc: %.blif %_$(FOOTPRINT).pcf $(BUILD)/DEVICE.var $(BUILD)/FOOTPRINT.var
-	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $@ -p $*_$(FOOTPRINT).pcf $<
+	arachne-pnr $(and $(Q),-q) -d $(DEVICE) -P $(FOOTPRINT) -o $@ -p $*_$(FOOTPRINT).pcf $<
 
 %.bin: %.asc
 	icepack $< $@
