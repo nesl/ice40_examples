@@ -161,12 +161,12 @@ If on a Windows machine (for viewing purposes only--i.e. this does not apply if 
 
 ## Project Design Process:
 In order to create your own project, start by copying the template provided in the blank project folder.  The general design process looks like this:
-1.  Write your top-level Verilog code in `<project>.v`. Any additional Verilog files required can be placed at the same level as `<project>.v` (in the project folder).
+1.  Write your top-level Verilog code in `<module>.v`. Any additional Verilog files required can be placed at the same level as `<module>.v` (in the project folder).
 
-2.  Modify your Makefile: change all `BLANK` and `BLANK_*` variables to some project prefix. If any additional Verilog files are required, they should be added to `<prefix>_VSRC`. Remember to separate each file with spaces.
+2.  Modify your Makefile: update the `MODULE` variable (this doesn't need to match the folder name, but does need to be unique across all modules). If any additional Verilog files are required, they should be added to `M_VSRC`. Remember to separate each file with spaces. Any other source files (including pcf files) should be added to `M_SRC`.
 
 3.  Modify `<project>_<footprint>.pcf`. `<footprint>` should be the package for your chip which is passed do `arachne-pnr`. The iCE40-HX8K-CT256 uses `ct256`, and the iCE40-HX1K-TQ144 uses `tq144`. For a full list of supported packages, see [the icestorm documentation](http://www.clifford.at/icestorm/#flags). If any pins are required other than the input clock and LEDs, add a line to the file using the format `set_io --warn-no-port <wire_name> <physical pin name>`.
 
 4.  Compile your project by running `make` from either the project or top-level directory.
 
-5.  If your project successfully compiles, connect your FPGA over USB and type `make burn` from the project directory, or `make burn-<project>` from the top-level directory to program the binary to your FPGA. 
+5.  If your project successfully compiles, connect your FPGA over USB and type `make burn` from the project directory, or `make burn-<module>` from the top-level directory to program the binary to your FPGA. 
