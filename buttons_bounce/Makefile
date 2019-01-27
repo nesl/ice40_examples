@@ -1,28 +1,5 @@
-BBOUNCE := buttons_bounce
+MODULE := buttons_bounce
+M_VSRC := buttons_bounce.v
+M_SRC := buttons_bounce_ct256.pcf
 
-ifndef BUILD
-.PHONY: all burn clean
-
-all:
-	$(MAKE) -C .. $(BBOUNCE)
-
-burn:
-	$(MAKE) -C .. burn-$(BBOUNCE)
-
-clean:
-	$(MAKE) -C .. $@
-endif
-
-VPATH += $(BBOUNCE)
-
-BBOUNCE_VSRC := $(BBOUNCE)/$(BBOUNCE).v
-BBOUNCE_SRC := $(BBOUNCE_VSRC) $(BBOUNCE)/$(BBOUNCE)_ct256.pcf
-SRC += $(BBOUNCE_SRC)
-
-.PHONY: $(BBOUNCE)
-
-$(BBOUNCE): $(BUILD)/$(BBOUNCE).bin
-
-$(BBOUNCE_SRC): $(BBOUNCE)/Makefile
-
-$(BUILD)/$(BBOUNCE).blif: $(BBOUNCE_VSRC)
+include $(realpath $(dir $(lastword $(MAKEFILE_LIST))))/../common.mk

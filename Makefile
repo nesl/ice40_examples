@@ -14,6 +14,9 @@ else
 Q :=1
 endif
 
+# Necessary so VPATH doesn't get reinterpreted
+VPATH :=
+
 MODULES := uart_transmission blank blinky buttons_bounce buttons_debounce buttons_nopullup fsm_simple
 
 # SRC holds all source files
@@ -21,7 +24,7 @@ SRC :=
 
 .PHONY: all clean burn-% FORCE
 
-all: $(MODULES)
+all:
 
 $(BUILD):
 	mkdir -p $(BUILD)

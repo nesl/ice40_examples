@@ -1,28 +1,5 @@
-FSM := fsm_simple
+MODULE := fsm
+M_VSRC := fsm.v button.v
+M_SRC := fsm_ct256.pcf
 
-ifndef BUILD
-.PHONY: all burn clean
-
-all:
-	$(MAKE) -C .. $(FSM)
-
-burn:
-	$(MAKE) -C .. burn-fsm
-
-clean:
-	$(MAKE) -C .. $@
-endif
-
-VPATH += $(FSM)
-
-FSM_VSRC := $(addprefix $(FSM)/,fsm.v button.v)
-FSM_SRC := $(FSM_VSRC) $(FSM)/fsm_ct256.pcf
-SRC += $(FSM_SRC)
-
-.PHONY: $(FSM)
-
-$(FSM): $(BUILD)/fsm.bin
-
-$(FSM_SRC): $(FSM)/Makefile
-
-$(BUILD)/fsm.blif: $(FSM_VSRC)
+include $(realpath $(dir $(lastword $(MAKEFILE_LIST))))/../common.mk
