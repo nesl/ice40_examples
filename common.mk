@@ -28,4 +28,6 @@ $(M_SRC): $(DIR)Makefile $(lastword $(MAKEFILE_LIST))
 
 $(BUILD)/$(MODULE).blif: $(M_VSRC)
 
+ifdef BUILD
 all: $(MODULE)
+endif
