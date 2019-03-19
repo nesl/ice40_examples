@@ -1,8 +1,9 @@
 # Use := where you can, as it only gets evaluated once
 BUILD     := build
 # ?= allows the user to pass in a device on the command line
-DEVICE   ?= 8k
-ifeq (8k,$(DEVICE))
+DEVICE ?= hx8k
+FAMILY := $(strip $(subst lp,,$(subst hx,, $(subst up,,$(DEVICE)))))
+ifeq (8k,$(FAMILY))
 FOOTPRINT := ct256
 else
 FOOTPRINT := tq144
@@ -14,15 +15,17 @@ else
 Q :=1
 endif
 
+PNR ?= arachne-pnr
+SYNTH ?= yosys
+
 # Necessary so VPATH doesn't get reinterpreted
 VPATH :=
-
 MODULES := uart_transmission blank blinky buttons_bounce buttons_debounce buttons_nopullup fsm_simple
 
 # SRC holds all source files
 SRC :=
 
-.PHONY: all clean burn-% FORCE
+.PHONY: all clean burn-% time-% FORCE
 
 all:
 
@@ -40,7 +43,7 @@ $(BUILD):
 # $^ all non-order-only dependencies
 # $* the stem of an implicit rule -- what % matches in %.blif
 $(BUILD)/%.blif: %.v | $(BUILD)
-	yosys $(and $(Q),-q) -p "synth_ice40 -top $* -blif $@" $^
+	$(SYNTH) $(and $(Q),-q) -p "synth_ice40 -top $* -blif $@" $^
 
 # .PHONY causes targets to be rebuilt every make, and built even if there is an up-to-date file
 # Depending on a .PHONY target will cause the rule to be run every time
@@ -62,14 +65,17 @@ $(BUILD)/%: %
 	ln -f $< $@
 
 # Note that yosys does not run if you only change DEVICE, just things from here down
-%.asc: %.blif %_$(FOOTPRINT).pcf $(BUILD)/DEVICE.var $(BUILD)/FOOTPRINT.var
-	arachne-pnr $(and $(Q),-q) -d $(DEVICE) -P $(FOOTPRINT) -o $@ -p $*_$(FOOTPRINT).pcf $<
+%.asc: %.blif %_$(FOOTPRINT).pcf $(BUILD)/FAMILY.var $(BUILD)/FOOTPRINT.var
+	$(PNR) $(and $(Q),-q) -d $(FAMILY) -P $(FOOTPRINT) -p $*_$(FOOTPRINT).pcf -o $@ $<
 
 %.bin: %.asc
 	icepack $< $@
 
 burn-%: $(BUILD)/%.bin
 	iceprog $<
+
+time-%: $(BUILD)/%.asc $(BUILD)/%_$(FOOTPRINT).pcf $(BUILD)/DEVICE.var $(BUILD)/FOOTPRINT.var
+	icetime -t -d $(DEVICE) -P $(FOOTPRINT) -p $(BUILD)/$*_$(FOOTPRINT).pcf $<
 
 clean:
 	rm -rf $(BUILD)
