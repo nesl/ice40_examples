@@ -1,13 +1,9 @@
 # Use := where you can, as it only gets evaluated once
-BUILD     := build
-# ?= allows the user to pass in a device on the command line
-DEVICE ?= hx8k
+BUILD := build
+
+BOARD ?= Lattice/ICE40HX1K-STICK-EVN
+include boards/$(BOARD)/cfg
 FAMILY := $(strip $(subst lp,,$(subst hx,, $(subst up,,$(DEVICE)))))
-ifeq (8k,$(FAMILY))
-FOOTPRINT := ct256
-else
-FOOTPRINT := tq144
-endif
 
 ifdef VERBOSE
 Q :=
@@ -43,7 +39,7 @@ $(BUILD):
 # $^ all non-order-only dependencies
 # $* the stem of an implicit rule -- what % matches in %.blif
 $(BUILD)/%.blif: %.v | $(BUILD)
-	$(SYNTH) $(and $(Q),-q) -p "synth_ice40 -top $* -blif $@" $^
+	$(SYNTH) $(and $(Q),-q) -p "read_verilog -DLEDS=$(LEDS) -DCLOCK=$(CLOCK) $^; synth_ice40 -top $* -blif $@"
 
 # .PHONY causes targets to be rebuilt every make, and built even if there is an up-to-date file
 # Depending on a .PHONY target will cause the rule to be run every time
@@ -65,8 +61,8 @@ $(BUILD)/%: %
 	ln -f $< $@
 
 # Note that yosys does not run if you only change DEVICE, just things from here down
-%.asc: %.blif %_$(FOOTPRINT).pcf $(BUILD)/FAMILY.var $(BUILD)/FOOTPRINT.var
-	$(PNR) $(and $(Q),-q) -d $(FAMILY) -P $(FOOTPRINT) -p $*_$(FOOTPRINT).pcf -o $@ $<
+%.asc: %.blif boards/$(BOARD)/pcf $(BUILD)/FAMILY.var $(BUILD)/PACKAGE.var $(BUILD)/BOARD.var
+	$(PNR) $(and $(Q),-q) -d $(FAMILY) -P $(PACKAGE) -p boards/$(BOARD)/pcf -o $@ $<
 
 %.bin: %.asc
 	icepack $< $@
@@ -74,8 +70,8 @@ $(BUILD)/%: %
 burn-%: $(BUILD)/%.bin
 	iceprog $<
 
-time-%: $(BUILD)/%.asc $(BUILD)/%_$(FOOTPRINT).pcf $(BUILD)/DEVICE.var $(BUILD)/FOOTPRINT.var
-	icetime -t -d $(DEVICE) -P $(FOOTPRINT) -p $(BUILD)/$*_$(FOOTPRINT).pcf $<
+time-%: $(BUILD)/%.asc boards/$(BOARD)/pcf $(BUILD)/DEVICE.var $(BUILD)/PACKAGE.var $(BUILD)/BOARD.var
+	icetime -t -d $(DEVICE) -P $(PACKAGE) -p boards/$(BOARD)/pcf $<
 
 clean:
 	rm -rf $(BUILD)
@@ -84,5 +80,6 @@ include $(addsuffix /Makefile,$(MODULES))
 
 # Because our sources/pinmaps depend on the makefile
 # all targets will get rebuilt every time the makefile changes
-$(SRC): Makefile
+# Additionally, we need to depend on LEDS and CLOCK
+$(SRC): Makefile $(BUILD)/LEDS.var $(BUILD)/CLOCK.var
 	@touch $@

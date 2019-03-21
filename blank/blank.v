@@ -1,15 +1,8 @@
 // Blink an LED provided an input clock
 /* module */
-module blank (hwclk, led1, led2, led3, led4, led5, led6, led7, led8 );
+module blank (hwclk, led);
     /* I/O */
     input hwclk;
-    output led1;
-    output led2;
-    output led3;
-    output led4;
-    output led5;
-    output led6;
-    output led7;
-    output led8;
+    output [`LEDS - 1:0] led;
 
 endmodule

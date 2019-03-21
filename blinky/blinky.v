@@ -1,33 +1,25 @@
 // Blink an LED provided an input clock
+
+`default_nettype none
+
 /* module */
-module blinky (hwclk, led1, led2, led3, led4, led5, led6, led7, led8 );
-    /* I/O */
+module blinky (hwclk, led);
     input hwclk;
-    output led1;
-    output led2;
-    output led3;
-    output led4;
-    output led5;
-    output led6;
-    output led7;
-    output led8;
+    output reg [`LEDS - 1:0] led;
 
-    /* Counter register */
-    reg [31:0] counter = 32'b0;
+    /*
+     * led[`LEDS-1] should blink at 1hz
+     * the *switching* speed should be 2 hz
+     */
+    parameter cycles = `CLOCK / (2 * `LEDS);
+    reg [32:0] counter = 32'b0;
 
-    /* LED drivers */
-    assign led1 = counter[18];
-    assign led2 = counter[19];
-    assign led3 = counter[20];
-    assign led4 = counter[21];
-    assign led5 = counter[22];
-    assign led6 = counter[23];
-    assign led7 = counter[24];
-    assign led8 = counter[25];
-
-    /* always */
     always @ (posedge hwclk) begin
-        counter <= counter + 1;
+	if (counter == cycles) begin
+		led <= led + 1;
+		counter <= 32'b0;
+	end else
+		counter <= counter + 1;
     end
 
 endmodule

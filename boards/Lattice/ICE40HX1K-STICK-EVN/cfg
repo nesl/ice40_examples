@@ -1,0 +1,4 @@
+DEVICE := hx1k
+PACKAGE := tq144
+LEDS := 5
+CLOCK := 32'd12_000_000
