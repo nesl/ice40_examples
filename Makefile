@@ -1,6 +1,9 @@
 # Use := where you can, as it only gets evaluated once
 BUILD := build
 
+# Load previous values of variables
+$(foreach VARIABLE,$(wildcard $(BUILD)/*.var),$(eval $(basename $(notdir $(VARIABLE))) ?= $(shell cat $(VARIABLE))))
+
 BOARD ?= Lattice/ICE40HX1K-STICK-EVN
 include boards/$(BOARD)/cfg
 FAMILY := $(strip $(subst lp,,$(subst hx,, $(subst up,,$(DEVICE)))))
