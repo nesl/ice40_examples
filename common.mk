@@ -18,13 +18,10 @@ endif
 VPATH += $(DIR)
 
 M_VSRC := $(addprefix $(DIR),$(M_VSRC))
-M_SRC := $(M_VSRC) $(addprefix $(DIR),$(M_SRC))
-SRC += $(M_SRC)
+SRC += $(M_VSRC)
 
 .PHONY: $(MODULE)
 $(MODULE): $(BUILD)/$(MODULE).bin
-
-$(M_SRC): $(DIR)Makefile $(lastword $(MAKEFILE_LIST))
 
 $(BUILD)/$(MODULE).blif: $(M_VSRC)
 
