@@ -16,6 +16,7 @@ endif
 
 PNR ?= arachne-pnr
 SYNTH ?= yosys
+FLASH ?= iceprog
 
 # Necessary so VPATH doesn't get reinterpreted
 VPATH :=
@@ -70,8 +71,8 @@ $(BUILD)/%: %
 %.bin: %.asc
 	icepack $< $@
 
-burn-%: $(BUILD)/%.bin
-	iceprog $<
+burn-%: $(BUILD)/%.bin $(BUILD)/FLASH.var
+	$(FLASH) $<
 
 time-%: $(BUILD)/%.asc boards/$(BOARD)/pcf $(BUILD)/DEVICE.var $(BUILD)/PACKAGE.var $(BUILD)/BOARD.var
 	icetime -t -d $(DEVICE) -P $(PACKAGE) -p boards/$(BOARD)/pcf $<
