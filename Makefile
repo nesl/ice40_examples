@@ -20,7 +20,7 @@ FLASH ?= iceprog
 
 # Necessary so VPATH doesn't get reinterpreted
 VPATH :=
-MODULES := uart blank blinky
+MODULES := uart blank blinky passthrough
 
 # SRC holds all source files
 SRC :=
