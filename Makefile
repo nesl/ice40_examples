@@ -55,8 +55,8 @@ FORCE:
 # If they are different, we update the file
 # If they are the same we don't
 # Anything which depends on $(BUILD)/DEVICE.var will only update if DEVICE changes
-$(BUILD)/%.var: FORCE
-	@echo $($*) | cmp - $@ || echo $($*) > $@
+$(BUILD)/%.var: FORCE | $(BUILD)
+	@echo "$($*)" | cmp -s - "$@" || echo "$($*)" > $@
 
 # Keep .var file around even though they are intermediate targets
 .PRECIOUS: $(BUILD)/%.var
@@ -85,4 +85,4 @@ include $(addsuffix /Makefile,$(MODULES))
 # Because our sources/pinmaps depend on the makefile
 # all targets will get rebuilt every time the makefile changes
 $(SRC): Makefile
-	touch $@
+	@touch $@
