@@ -20,7 +20,7 @@ SYNTH ?= yosys
 
 # Necessary so VPATH doesn't get reinterpreted
 VPATH :=
-MODULES := uart_transmission blank blinky buttons_bounce buttons_debounce buttons_nopullup fsm_simple
+MODULES := uart blank blinky
 
 # SRC holds all source files
 SRC :=
