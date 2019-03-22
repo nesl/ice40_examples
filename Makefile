@@ -2,8 +2,13 @@
 BUILD := build
 
 # Load previous values of variables
-$(foreach VARIABLE,$(wildcard $(BUILD)/*.var),$(eval $(basename $(notdir $(VARIABLE))) ?= $(shell cat $(VARIABLE))))
+VARS := $(foreach VAR,$(wildcard $(BUILD)/*.var),$(basename $(notdir $(VARIABLE))))
+$(foreach VAR,$(VARS),$(eval $(VAR) ?= $(shell cat $(BUILD)/$(VAR).var)))
 
+# List of variables set by the board cfg
+# We don't just use VARS since this could be the first run,
+# so some of these variables may not have a .var file
+BOARD_VARS := BOARD DEVICE PACKAGE LEDS BUTS CLOCK
 BOARD ?= Lattice/ICE40HX1K-STICK-EVN
 include boards/$(BOARD)/cfg
 FAMILY := $(strip $(subst lp,,$(subst hx,, $(subst up,,$(DEVICE)))))
@@ -43,7 +48,7 @@ $(BUILD):
 # $^ all non-order-only dependencies
 # $* the stem of an implicit rule -- what % matches in %.blif
 $(BUILD)/%.blif: %.v | $(BUILD)
-	$(SYNTH) $(and $(Q),-q) -p "read_verilog -DLEDS=$(LEDS) -DCLOCK=$(CLOCK) $^; synth_ice40 -top $* -blif $@"
+	$(SYNTH) $(and $(Q),-q) -p "read_verilog $(foreach VAR,$(BOARD_VARS),$(and $($(VAR)),-D$(VAR)=$($(VAR)))) $^; synth_ice40 -top $* -blif $@"
 
 # .PHONY causes targets to be rebuilt every make, and built even if there is an up-to-date file
 # Depending on a .PHONY target will cause the rule to be run every time
@@ -65,7 +70,7 @@ $(BUILD)/%: %
 	ln -f $< $@
 
 # Note that yosys does not run if you only change DEVICE, just things from here down
-%.asc: %.blif boards/$(BOARD)/pcf $(BUILD)/FAMILY.var $(BUILD)/PACKAGE.var $(BUILD)/BOARD.var
+%.asc: %.blif boards/$(BOARD)/pcf $(BUILD)/FAMILY.var $(BUILD)/PACKAGE.var $(BUILD)/BOARD.var $(BUILD)/PNR.var
 	$(PNR) $(and $(Q),-q) -d $(FAMILY) -P $(PACKAGE) -p boards/$(BOARD)/pcf -o $@ $<
 
 %.bin: %.asc
@@ -84,6 +89,6 @@ include $(addsuffix /Makefile,$(MODULES))
 
 # Because our sources/pinmaps depend on the makefile
 # all targets will get rebuilt every time the makefile changes
-# Additionally, we need to depend on LEDS and CLOCK
-$(SRC): Makefile $(BUILD)/LEDS.var $(BUILD)/CLOCK.var
+# Additionally, we need to depend on BOARD (and SYNTH since this is the only place for it)
+$(SRC): Makefile $(BUILD)/BOARD.var $(BUILD)/SYNTH.var
 	@touch $@
