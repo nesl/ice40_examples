@@ -1,13 +1,21 @@
 /* Just pass through buttons to LEDs and RxD to TxD */
 
-module passthrough (but, led, uart_tx, uart_rx);
-    /* I/O */
-    input [`LED-1:0] but;
-    input uart_rx;
-    output uart_tx;
-    output [`LED-1:0] led;
+`ifdef BUTS
+`endif
 
+module passthrough (
+    `ifdef BUTS
+	    input [width - 1:0] but,
+	    output [width - 1:0] led,
+    `endif
+    input uart_rx,
+    output uart_tx
+);
+
+`ifdef BUTS
+    parameter width = `LEDS > `BUTS ? `BUTS : `LEDS;
     assign but = led;
+`endif
     assign uart_tx = uart_rx;
 
 endmodule
