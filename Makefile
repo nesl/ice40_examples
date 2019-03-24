@@ -5,13 +5,14 @@ BUILD := build
 VARS := $(foreach VAR,$(wildcard $(BUILD)/*.var),$(basename $(notdir $(VARIABLE))))
 $(foreach VAR,$(VARS),$(eval $(VAR) ?= $(shell cat $(BUILD)/$(VAR).var)))
 
-# List of variables set by the board cfg
-# We don't just use VARS since this could be the first run,
-# so some of these variables may not have a .var file
-BOARD_VARS := BOARD DEVICE PACKAGE LEDS BUTS CLOCK
 BOARD ?= Lattice/ICE40HX1K-STICK-EVN
 include boards/$(BOARD)/cfg
 FAMILY := $(strip $(subst lp,,$(subst hx,, $(subst up,,$(DEVICE)))))
+# List of variables set by the board cfg
+# We don't just use VARS since this could be the first run,
+# so some of these variables may not have a .var file
+BOARD_VARS := DEVICE PACKAGE LEDS BUTS CLOCK
+BOARD_DEFINES := $(foreach VAR,$(BOARD_VARS),$(and $($(VAR)),-D$(VAR)=$($(VAR))))
 
 ifdef VERBOSE
 Q :=
@@ -48,7 +49,7 @@ $(BUILD):
 # $^ all non-order-only dependencies
 # $* the stem of an implicit rule -- what % matches in %.blif
 $(BUILD)/%.blif: %.v | $(BUILD)
-	$(SYNTH) $(and $(Q),-q) -p "read_verilog $(foreach VAR,$(BOARD_VARS),$(and $($(VAR)),-D$(VAR)=$($(VAR)))) $^; synth_ice40 -top $* -blif $@"
+	$(SYNTH) $(and $(Q),-q) -p "read_verilog -noautowire $(BOARD_DEFINES) $^; synth_ice40 -top $* -blif $@"
 
 # .PHONY causes targets to be rebuilt every make, and built even if there is an up-to-date file
 # Depending on a .PHONY target will cause the rule to be run every time

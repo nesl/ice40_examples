@@ -1,7 +1,5 @@
 // Blink an LED provided an input clock
 
-`default_nettype none
-
 /* module */
 module blinky (hwclk, led);
     input hwclk;
