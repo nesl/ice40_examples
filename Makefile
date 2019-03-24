@@ -31,12 +31,12 @@ MODULES := uart blank blinky passthrough
 # SRC holds all source files
 SRC :=
 
-.PHONY: all clean burn-% time-% FORCE
+.PHONY: all clean burn-% time-% test-% cov-% FORCE
 
 all:
 
 $(BUILD):
-	mkdir -p $(BUILD)
+	mkdir -p $@
 
 # First pattern rule creates a .blif from a .v
 # We also have an order-only prerequisite on the build dir
@@ -88,8 +88,46 @@ clean:
 
 include $(addsuffix /Makefile,$(MODULES))
 
+# The following snippet Copyright 2003-2019 by Wilson Snyder, 2019 Sean Anderson
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of either the GNU Lesser General Public License Version 3
+# or the Perl Artistic License Version 2.0.
+
+VERILATOR ?= verilator
+VERILATOR_COVERAGE ?= verilator_coverage
+# Generate C++ in executable form
+VERILATOR_FLAGS += -cc --exe
+# Optimize
+VERILATOR_FLAGS += -O2 -x-assign 0
+# Warn abount lint issues; may not want this on less solid designs
+VERILATOR_FLAGS += -Wall
+# Make waveforms
+VERILATOR_FLAGS += --trace
+# Check SystemVerilog assertions
+VERILATOR_FLAGS += --assert
+# Generate coverage analysis
+VERILATOR_FLAGS += --coverage
+# end snippet
+
+# Similar to BOARD_DEFINES, but we need to be careful to remove non-c-friendly characters
+# signed numbers are NOT supported
+sanitize = $(lastword $(subst 'h,' 0x,$(subst 'd,' ,$(subst _,,$1))))
+export USER_CPPFLAGS := $(foreach VAR,$(BOARD_VARS),$(and $($(VAR)),-D$(VAR)=$(call sanitize,$($(VAR)))))
+
+$(BUILD)/test-%:
+	mkdir -p $@
+
+test-%: | $(BUILD)/test-%
+	$(VERILATOR) $(VERILATOR_FLAGS) $$(echo "$(BOARD_DEFINES)") -Mdir $(BUILD)/test-$* --prefix $* $^
+	$(MAKE) -C $(BUILD)/test-$* -f $*.mk
+	$(BUILD)/test-$*/$* +trace
+
+cov-%: test-%
+	$(VERILATOR_COVERAGE) --annotate $(BUILD)/test-$*/logs/annotated $(BUILD)/test-$*/logs/coverage.dat
+
 # Because our sources/pinmaps depend on the makefile
 # all targets will get rebuilt every time the makefile changes
-# Additionally, we need to depend on BOARD (and SYNTH since this is the only place for it)
-$(SRC): Makefile $(BUILD)/BOARD.var $(BUILD)/SYNTH.var
+# Additionally, we need to depend on BOARD
+# (and SYNTH/VERILATOR* since this is the only place to put it)
+$(SRC): Makefile $(BUILD)/BOARD.var $(BUILD)/SYNTH.var $(BUILD)/VERILATOR.var $(BUILD)/VERILATOR_COVERAGE.var
 	@touch $@

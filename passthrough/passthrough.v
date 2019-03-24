@@ -1,8 +1,5 @@
 /* Just pass through buttons to LEDs and RxD to TxD */
 
-`ifdef BUTS
-`endif
-
 module passthrough (
     `ifdef BUTS
 	    input [width - 1:0] but,

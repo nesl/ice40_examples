@@ -18,12 +18,15 @@ endif
 VPATH += $(DIR)
 
 M_VSRC := $(addprefix $(DIR),$(M_VSRC))
-SRC += $(M_VSRC)
+M_CSRC := $(addprefix $(DIR),$(M_CSRC))
+SRC += $(M_VSRC) $(M_CSRC)
 
 .PHONY: $(MODULE)
 $(MODULE): $(BUILD)/$(MODULE).bin
 
 $(BUILD)/$(MODULE).blif: $(M_VSRC)
+
+test-$(MODULE): $(M_VSRC) $(M_CSRC)
 
 ifdef BUILD
 all: $(MODULE)
