@@ -45,7 +45,12 @@ ACTION=="add", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE:="666"
 ```
 
 ### Installation on OSX
-Installation on Mac OSX is most easily achieved using Brew. If you have not installed Brew previously, follow the instructions here: http://brew.sh/. After installing Brew, follow the following steps.
+Installation on Mac OSX is most easily achieved using Brew. If you have not installed Brew previously, follow the instructions here: http://brew.sh/. After installing Brew, follow the following steps (these have been verified on OS X Catalina):
+
+Make sure to install command line tools
+```
+xcode-select --install
+```
 
 Install the dependencies
 ```
@@ -59,6 +64,7 @@ brew install python
 brew install python3
 brew install libftdi0
 brew install libffi
+brew install tcl-tk
 ```
 Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`. As with Linux, the rest of the installation requires downloading several git repositories and compiling the source:
 
@@ -80,6 +86,9 @@ sudo make install
 ```
 Installing Yosys for Verilog synthesis:
 ```
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/tcl-tk/lib"
+export CPPFLAGS="-I/usr/local/opt/tcl-tk/include"
 git clone https://github.com/cliffordwolf/yosys.git yosys
 cd yosys
 make
