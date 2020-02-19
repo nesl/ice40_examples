@@ -1,31 +1,31 @@
 /* Top level module for keypad + UART demo */
-module top (
+module uart (
     // input hardware clock (12 MHz)
     hwclk, 
     // all LEDs
-    led1,
+    led,
     // UART lines
-    ftdi_tx, 
+    uart_tx,
     );
 
     /* Clock input */
     input hwclk;
 
     /* LED outputs */
-    output led1;
+    output [`LEDS - 1:0] led;
 
-    /* FTDI I/O */
-    output ftdi_tx;
+    /* uart I/O */
+    output uart_tx;
 
-    /* 9600 Hz clock generation (from 12 MHz) */
+    /* 9600 Hz clock generation (from 100 MHz) */
     reg clk_9600 = 0;
     reg [31:0] cntr_9600 = 32'b0;
-    parameter period_9600 = 625;
+    parameter period_9600 = 434;
 
-    /* 1 Hz clock generation (from 12 MHz) */
+    /* 1 Hz clock generation (from 100 MHz) */
     reg clk_1 = 0;
     reg [31:0] cntr_1 = 32'b0;
-    parameter period_1 = 6000000;
+    parameter period_1 = 50000000;
 
     // Note: could also use "0" or "9" below, but I wanted to
     // be clear about what the actual binary value is.
@@ -53,11 +53,11 @@ module top (
         // input: tx is finished
         .txdone (uart_txed),
         // output UART tx pin
-        .tx (ftdi_tx),
+        .tx (uart_tx),
     );
 
     /* Wiring */
-    assign led1=ledval;
+    assign led[0] = ledval;
     
     /* Low speed clock generation */
     always @ (posedge hwclk) begin

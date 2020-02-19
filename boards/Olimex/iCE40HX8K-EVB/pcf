@@ -1,0 +1,81 @@
+# Whenever possible, pin names have been taken from the official schematic
+# <https://github.com/OLIMEX/iCE40HX8K-EVB/blob/master/HARDWARE/REV-B/iCE40HX8K-EVB_Rev_B.pdf>
+
+# Clock
+set_io -nowarn SYSCLK J3
+set_io -nowarn hwclk J3
+
+# LEDs
+set_io -nowarn LED1 M12
+set_io -nowarn led[0] M12
+set_io -nowarn LED2 R16
+set_io -nowarn led[1] R16
+
+# Buttons
+set_io -nowarn BUT1 K11
+set_io -nowarn but[0] K11
+set_io -nowarn BUT2 P13
+set_io -nowarn but[1] P13
+
+# SPI Flash
+set_io -nowarn iCE40-CDONE M10
+set_io -nowarn iCE40-CRESET N11
+set_io -nowarn iCE40-SDO P12
+set_io -nowarn sdo P12
+set_io -nowarn iCE40-SDI P11
+set_io -nowarn sdi P11
+set_io -nowarn iCE40-SCK R11
+set_io -nowarn sck R11
+set_io -nowarn iCE40-SS_B R12
+set_io -nowarn ss R12
+
+# Programming connector
+set_io -nowarn RxD L11
+set_io -nowarn uart_rx L11
+set_io -nowarn TxD T16
+set_io -nowarn uart_tx T16
+
+# SRAM
+set_io -nowarn SRAM_CS T6
+set_io -nowarn SRAM_OE L9
+set_io -nowarn SRAM_WE T7
+set_io -nowarn SA[0] N6
+set_io -nowarn SA[1] T1
+set_io -nowarn SA[2] P4
+set_io -nowarn SA[3] R2
+set_io -nowarn SA[4] N5
+set_io -nowarn SA[5] T2
+set_io -nowarn SA[6] P5
+set_io -nowarn SA[7] R3
+set_io -nowarn SA[8] R5
+set_io -nowarn SA[9] T3
+set_io -nowarn SA[10] R4
+set_io -nowarn SA[11] M7
+set_io -nowarn SA[12] N7
+set_io -nowarn SA[13] P6
+set_io -nowarn SA[14] M8
+set_io -nowarn SA[15] T5
+set_io -nowarn SA[16] R6
+set_io -nowarn SA[17] P8
+set_io -nowarn SD[0] T8
+set_io -nowarn SD[1] P7
+set_io -nowarn SD[2] N9
+set_io -nowarn SD[3] T9
+set_io -nowarn SD[4] M9
+set_io -nowarn SD[5] R9
+set_io -nowarn SD[6] K9
+set_io -nowarn SD[7] P9
+set_io -nowarn SD[8] R10
+set_io -nowarn SD[9] L10
+set_io -nowarn SD[10] P10
+set_io -nowarn SD[11] N10
+set_io -nowarn SD[12] T10
+set_io -nowarn SD[13] T11
+set_io -nowarn SD[14] T15
+set_io -nowarn SD[15] T14
+
+# JTAG
+set_io -nowarn TDI R14
+set_io -nowarn TMS R15
+set_io -nowarn TCK P14
+set_io -nowarn TDO P15

@@ -1,0 +1,5 @@
+DEVICE := hx8k
+PACKAGE := ct256
+LEDS := 8
+BUTS :=
+CLOCK := 32'd12_000_000
