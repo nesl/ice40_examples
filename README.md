@@ -29,6 +29,16 @@ cd arachne-pnr
 make
 sudo make install
 ```
+
+Installing NextPNR (replacement of Arachne-PNR) for place and route:
+```
+git clone https://github.com/YosysHQ/nextpnr nextpnr
+cd nextpnr
+cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=/usr/local .
+make -j$(nproc)
+sudo make install
+```
+
 Installing Yosys for Verilog synthesis:
 ```
 git clone https://github.com/cliffordwolf/yosys.git yosys
@@ -65,6 +75,7 @@ brew install python3
 brew install libftdi0
 brew install libffi
 brew install tcl-tk
+brew install boost boost-python3 qt5 eigen
 ```
 Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`. As with Linux, the rest of the installation requires downloading several git repositories and compiling the source:
 
@@ -77,13 +88,22 @@ sudo make install
 ```
 
 Installing Arachne-PNR for place and route:
-
 ```
 git clone https://github.com/cseed/arachne-pnr.git arachne-pnr
 cd arachne-pnr
 make
 sudo make install
 ```
+
+Installing NextPNR (replacement of Arachne-PNR) for place and route:
+```
+git clone https://github.com/YosysHQ/nextpnr nextpnr
+cd nextpnr
+cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=/usr/local .
+make
+sudo make install
+```
+
 Installing Yosys for Verilog synthesis:
 ```
 export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
