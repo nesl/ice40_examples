@@ -11,7 +11,8 @@ Installing prerequisites:
 ```
 sudo apt-get install build-essential clang bison flex libreadline-dev \
                      gawk tcl-dev libffi-dev git mercurial graphviz   \
-                     xdot pkg-config python python3 libftdi-dev
+                     xdot pkg-config python python3 libftdi-dev \
+                     qt5-default python3-dev libboost-all-dev cmake
 ```
 Installing the IceStorm toolchain:
 ```
@@ -75,7 +76,14 @@ brew install python3
 brew install libftdi0
 brew install libffi
 brew install tcl-tk
-brew install boost boost-python3 qt5 eigen
+brew install boost 
+brew install boost-python3 
+brew install qt5
+brew install eigen
+# if OS X before Catalina
+#echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile
+# if Catalina
+echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.zshrc
 ```
 Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`. As with Linux, the rest of the installation requires downloading several git repositories and compiling the source:
 
