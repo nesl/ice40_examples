@@ -18,6 +18,8 @@ Installing the IceStorm toolchain:
 ```
 git clone https://github.com/cliffordwolf/icestorm.git icestorm
 cd icestorm
+# if your are on OS X, modify icebox/Makefile to replace all 
+# instances of sed -i with sed -i '' before continuing
 make
 sudo make install
 ```
