@@ -20,6 +20,7 @@ git clone https://github.com/cliffordwolf/icestorm.git icestorm
 cd icestorm
 # if your are on OS X, modify icebox/Makefile to replace all 
 # instances of sed -i with sed -i '' before continuing
+# sed -i '' "s/sed -i/sed -i ''/g"  icebox/Makefile
 make
 sudo make install
 ```
