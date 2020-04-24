@@ -1,8 +1,8 @@
 # Project setup
 PROJ      = uart
 BUILD     = ./build
-DEVICE    = 1k
-#DEVICE    = 8k
+#DEVICE    = 1k
+DEVICE    = 8k
 ifeq (8k,$(DEVICE))
 FOOTPRINT = ct256
 else
