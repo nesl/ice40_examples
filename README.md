@@ -65,24 +65,11 @@ xcode-select --install
 
 Install the dependencies
 ```
-brew install bison
-brew install gawk
-brew install pkg-config
-brew install git
-brew install mercurial
-brew install graphviz
-brew install python
-brew install python3
-brew install libftdi0
-brew install libffi
-brew install tcl-tk
-brew install boost 
-brew install boost-python3 
-brew install qt5
-brew install eigen
-# if OS X before Catalina
+brew install bison gawk pkg-config git mercurial graphviz python python3 libftdi0 libffi tcl-tk \
+     boost boost-python3 qt5 eigen
+# if OS X version before Catalina (i.e. < 10.15)
 #echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile
-# if Catalina
+# if Catalina or later (i.e. >= 10.15)
 echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.zshrc
 ```
 Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`. As with Linux, the rest of the installation requires downloading several git repositories and compiling the source:
@@ -91,8 +78,8 @@ Installing the IceStorm toolchain:
 ```
 git clone https://github.com/cliffordwolf/icestorm.git icestorm
 cd icestorm
-# if on OS X, modify icebox/Makefile to replace all instances of sed -i with sed -i ''
-# sed -i '' "s/sed -i/sed -i ''/g"  icebox/Makefile
+# if on OS X Catalina, modify icebox/Makefile to replace all instances of sed -i with sed -i ''
+sed -i '' "s/sed -i/sed -i ''/g"  icebox/Makefile
 make
 sudo make install
 ```
@@ -138,7 +125,7 @@ Installing VirtualBox:
 Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. You must also install the VirtualBox extension pack, listed here: https://www.virtualbox.org/wiki/Downloads to ensure that the USB pass through to your FPGA works. 
 
 Downloading the VM Image:
-Download one the followingBased on Ubuntu 14.0.4 pre-made virtual machine image here: 
+Download one the following pre-made virtual machine images here: 
 
 * https://ucla.box.com/s/jrd58laojxagop5urewt6qawcrhzwzm5 (from April 2020: latest versions of all the tools and Ubuntu; needs testing)
 * https://ucla.box.com/s/fyapf4i4462b5od4ml5p057aljtvq2rx (from 2016: older versions of various tools and Ubuntu; been used extensively)
