@@ -125,7 +125,7 @@ make
 sudo make install
 ```
 
-If successful, you will be able to compile any of the example projects by navigating to the project folder and executing the command `make`.
+If successful, you will be able to compile any of the example projects in the current repository by navigating to the project folder and executing the command `make`.
 
 ### Installation on Windows
 The IceStorm toolchain is not supported on Windows operating systems. However, you can still use the tools via a Virtual Machine as described in the next section.
@@ -138,10 +138,19 @@ Installing VirtualBox:
 Follow the instructions here: https://www.virtualbox.org/ in order to install the free VirtualBox virtual machine software for your operating system of choice. You must also install the VirtualBox extension pack, listed here: https://www.virtualbox.org/wiki/Downloads to ensure that the USB pass through to your FPGA works. 
 
 Downloading the VM Image:
-Download our pre-made virtual machine image here: https://ucla.box.com/s/1a2klltpef5xp3bx7ayxrdhg57n4gwwr (if the link doesn't work, please contact us)  and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
+Download one the followingBased on Ubuntu 14.0.4 pre-made virtual machine image here: 
+
+* https://ucla.box.com/s/jrd58laojxagop5urewt6qawcrhzwzm5 (from April 2020: latest versions of all the tools and Ubuntu; needs testing)
+* https://ucla.box.com/s/fyapf4i4462b5od4ml5p057aljtvq2rx (from 2016: older versions of various tools and Ubuntu; been used extensively)
+
+and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
 
 Start the virtual machine:
-Start the VirtualBox software. The virtual machine should appear in the list on the left. Click this image to highlight it, and then click start to power up the virtual machine. The username for this machine is "developer" and the administrative password is "verilogisfun". A recent snapshot of this repository can be found on the desktop. 
+Start the VirtualBox software. The virtual machine should appear in the list on the left. Click this image to highlight it, and then click start to power up the virtual machine. The username for this machine is "developer" and the administrative password is "verilogisfun". A recent snapshot of this repository can be found on the desktop.
+
+## USB Issues
+
+The FPGA boards uses a FTDI2232H chip (https://www.ftdichip.com/Products/ICs/FT2232H.htm) to connect to USB. The software loads the bitstream into the FPGA via the SPI protocol using low level bit-banging through the USB. To make things work, depending on your OS, you may need to install drivers from FTDI (https://www.ftdichip.com/FTDrivers.htm. Additionally, the drivers needed to program the FPGA may conflict with UART based serial communication between the FPGA (e.g. as is done in one of the sample designs, _uart_transmission_) and a terminal application. This seems to b an issue on OS X, and may require additional steps as outlined later.
 
 ## Installing the keypad
 Several of these example projects use a simple membrane keypad that can be purchased from Adafruit here: https://www.adafruit.com/product/419 . For all projects in this repository, this keypad is attached so that pins 1 through 7 (when enumerated left to right as viewed from the top side of the keypad) connect to the following FGPA I/O pins in this order: J15  G14  K14  GND  K15  M16  N16. This will effectively disable row 4 of the keypad due to the unfortunate placing of the ground pins on the development board, meaning the keypad itself will only be able to recognize keys 1 through 9 and not '*', '0', or '#'.
@@ -192,6 +201,7 @@ screen DEVNAME
 where DEVNAME is as described above. For example, `screen /dev/tty.USB2`.
 
 Viewing UART transmission on OSX:
+
 The process for viewing UART transmission on Mac OSX is the same as that of Linux, with one caveat: The FTDI drivers required to translate USB to/from UART and SPI (the protocol used to load the bitstream onto the FPGA) sometimes fight against each other. The result of this is that you need to unload the FTDI driver in order to program the FPGA device and reload the driver if you want to receive communication over UART.  To see what FTDI drivers are currently running, issue the command `kextstat | grep FTDI`. If there is no output, no FTDI drivers are running and your program binaries can successfully be programmed onto your FPGA. If there is a driver listed, note the driver name, e.g. `com.apple.driver.AppleUSBFTDI`. In order to unload this driver, type `kextunload -b com.apple.driver.AppleUSBFTDI` and attempt to program the FPGA once more. If you have finished programming the FPGA and now want to view the UART transmission on the console, re-load the driver: e.g. `kextload -b com.apple.driver.AppleUSBFTDI`. As with Linux, you now want to find the device by typing `ls /dev/tty.*` and then using the `screen` command as before. 
 
 Viewing UART transmission on Windows:
