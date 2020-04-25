@@ -127,8 +127,8 @@ Follow the instructions here: https://www.virtualbox.org/ in order to install th
 Downloading the VM Image:
 Download one the following pre-made virtual machine images here: 
 
-* https://ucla.box.com/s/jrd58laojxagop5urewt6qawcrhzwzm5 (from April 2020: latest versions of all the tools and Ubuntu; needs testing)
-* https://ucla.box.com/s/fyapf4i4462b5od4ml5p057aljtvq2rx (from 2016: older versions of various tools and Ubuntu; been used extensively)
+* https://ucla.box.com/s/jrd58laojxagop5urewt6qawcrhzwzm5 (from April 2020: latest versions of all the tools and Ubuntu; needs testing; username = developer and password = Verilog==Fun!).
+* https://ucla.box.com/s/fyapf4i4462b5od4ml5p057aljtvq2rx (from 2016: older versions of various tools and Ubuntu; been used extensively; username = developer and password = verilogisfun).
 
 and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
 
@@ -180,20 +180,24 @@ This project shows a simple Mealy FSM using buttons [1] and [2] from the keypad.
 ### uart_transmission
 This project demonstrates a simple universal asynchronous receiver/transmitter (UART) state machine. This state machine is constructed as a Verilog module with a 1 byte input and a 1 bit transmit input signal. By default, the program will cycle through ascii numerical digits "0" through "9", or equivalently decimal values 48 to 57. Digits are printed over UART + FTDI converter to a screen on the host at a baud rate of 9600.  Note that in this example only the UART transmitter state machine is implemented, and no receive functionality is provided. In order to view the output, a terminal program should be installed.  
 
-Viewing UART transmission on Linux:
-The device virtual COM port will appear under /dev/ on Linux machines. Typically, the name will look something like /dev/tty.USBA or /dev/tty.USB1.  You can easiliy list possible devices connected by typing `ls /dev/tty.*`. There will be two possible devices -- one (typically the first one in the ordered pair, such as A or 1) for programming your FPGA, and one for UART communication. Call this second one DEVNAME, for example "/dev/tty.USB2". On Linux, you can view the output from the UART communication by issuing the command 
+#### Viewing UART transmission on Linux:
+
+The device virtual COM port will appear under /dev/ on Linux machines. Typically, the name will look something like /dev/tty.USBA or /dev/tty.USB1 or /dev/ttyUSB0.  You can easiliy list possible devices connected by typing `ls /dev/tty.*`. There will be two possible devices -- one (typically the first one in the ordered pair, such as A or 1 or 0) for programming your FPGA, and one for UART communication. Call this second one DEVNAME, for example "/dev/tty.USB2" or /dev/ttyUSB1. On Linux, you can view the output from the UART communication by issuing the command 
 ```
 screen DEVNAME
 ```
-where DEVNAME is as described above. For example, `screen /dev/tty.USB2`.
+where DEVNAME is as described above. For example, `screen /dev/ttyUSB1`. Alternatively, you can use a serial terminal program with a GUI, such as [CoolTerm](https://freeware.the-meiers.org). However, if your running Linux under VirtualBox, it would be better if you used a terminal program on your host machine/OS.
 
-Viewing UART transmission on OSX:
+If running the `screen` command (or the terminal application that you may be using) is unable to open the USB port because of permission problems, you would need to run them with administrative privileges, such as `sudo screen /dev/ttryUSB1`. Alternatively, on Ubuntu 18.04.x, you can add the user to the dialout group via the command `sudo usermod -a -G dialout $USER` so as to gain permission to open the USB port.
+
+#### Viewing UART transmission on OSX:
 
 The process for viewing UART transmission on Mac OSX is the same as that of Linux. For the OS X Catalina, once you install FTDI's VCP driver as explained earlier, then do 'echo /dev/tty.usbserial-\*' to find the two devices corresponding to the FPGA board, e.g. /dev/tty.usbserial-142100 and /dev/tty.usbserial-142101. The second one (/dev/tty.usbserial-142101 in the example) is the one which is being used here. Now using the command 'screen /dev/tty.usbserial-142101' or an app such as (Serial)[https://www.decisivetactics.com/products/serial/], (SerialTools)[https://apps.apple.com/us/app/serialtools/id611021963?mt=12], and (others)[https://pbxbook.com/other/mac-ser.html], one can look at the output.
 
 For older versions of OS X there is a caveat: the FTDI drivers required to translate USB to/from UART and SPI (the protocol used to load the bitstream onto the FPGA) sometimes fight against each other. The result of this is that one needs to unload the FTDI driver in order to program the FPGA device and reload the driver if you want to receive communication over UART.  To see what FTDI drivers are currently running, issue the command `kextstat | grep FTDI`. If there is no output, no FTDI drivers are running and your program binaries can successfully be programmed onto your FPGA. If there is a driver listed, note the driver name, e.g. `com.apple.driver.AppleUSBFTDI`. In order to unload this driver, type `kextunload -b com.apple.driver.AppleUSBFTDI` and attempt to program the FPGA once more. If you have finished programming the FPGA and now want to view the UART transmission on the console, re-load the driver: e.g. `kextload -b com.apple.driver.AppleUSBFTDI`. As with Linux, you now want to find the device by typing `ls /dev/tty.usb*` and then using the `screen` command or one of the serial apps as described above.
 
-Viewing UART transmission on Windows:
+#### Viewing UART transmission on Windows:
+
 If on a Windows machine (for viewing purposes only--i.e. this does not apply if you are using a VM on a Windows host), you must download a serial console program such as Realterm: http://realterm.sourceforge.net/, following their instructions to set up a Serial port with 8 bits, no parity, 1 stop bit, and 9600 baud rate. 
 
 ## Project Design Process:
