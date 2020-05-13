@@ -133,7 +133,7 @@ Download one the following pre-made virtual machine images here:
 and then unzip the contents of the image into your Virtualbox images folder--e.g. for Mac, this folder is in ~/VirtualBox VMs/.
 
 Start the virtual machine:
-Start the VirtualBox software. The virtual machine should appear in the list on the left. Click this image to highlight it, and then click start to power up the virtual machine. The username for this machine is "developer" and the administrative password is "verilogisfun". A recent snapshot of this repository can be found on the desktop.
+Start the VirtualBox software. The virtual machine should appear in the list on the left. Click this image to highlight it, and then click start to power up the virtual machine. The username and password depend on which version of the virtual machine your are using and are as noted above. A recent snapshot of this repository can be found on the desktop.
 
 ## USB Drivers
 
