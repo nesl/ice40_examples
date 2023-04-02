@@ -74,6 +74,7 @@ Install the dependencies
 ```
 brew install bison gawk pkg-config git mercurial graphviz python python3 libftdi0 libffi tcl-tk \
   boost boost-python3 qt5 eigen yosys
+```
 
 The rest of the installation requires downloading several git repositories and compiling the source:
 
