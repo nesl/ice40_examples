@@ -56,60 +56,51 @@ ACTION=="add", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE:="666"
 ```
 
 ### Installation on OSX
-Installation on Mac OSX is most easily achieved using Brew. If you have not installed Brew previously, follow the instructions here: http://brew.sh/. After installing Brew, follow the following steps (these have been verified on OS X Catalina):
+Installation on Mac OSX is most easily achieved using Brew.
 
-Make sure to install command line tools
+First make sure to install Xcode from Apple's Mac App Store (https://apps.apple.com/us/app/xcode/id497799835) and then its command line tools
 ```
 xcode-select --install
 ```
 
+If you have not installed Brew previously, follow the instructions here: http://brew.sh/.
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+After installing Brew, follow the following steps (these have been verified on OS X Ventura):
+
 Install the dependencies
 ```
 brew install bison gawk pkg-config git mercurial graphviz python python3 libftdi0 libffi tcl-tk \
-     boost boost-python3 qt5 eigen
-# if OS X version before Catalina (i.e. < 10.15)
-#echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile
-# if Catalina or later (i.e. >= 10.15)
-echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.zshrc
-```
-Note: if pkg-config is already installed but producing errors, try `brew reinstall pkg-config`. As with Linux, the rest of the installation requires downloading several git repositories and compiling the source:
+  boost boost-python3 qt5 eigen yosys
+
+The rest of the installation requires downloading several git repositories and compiling the source:
 
 Installing the IceStorm toolchain:
 ```
+cd $HOME/local
 git clone https://github.com/cliffordwolf/icestorm.git icestorm
 cd icestorm
-# if on OS X Catalina, modify icebox/Makefile to replace all instances of sed -i with sed -i ''
-sed -i '' "s/sed -i/sed -i ''/g"  icebox/Makefile
 make
-sudo make install
+make install PREFIX=$HOME/local
 ```
-
-Installing Arachne-PNR for place and route:
+Installing NextPNR for place and route:
 ```
-git clone https://github.com/cseed/arachne-pnr.git arachne-pnr
-cd arachne-pnr
-make
-sudo make install
-```
-
-Installing NextPNR (replacement of Arachne-PNR) for place and route:
-```
+cd $HOME/local
 git clone https://github.com/YosysHQ/nextpnr nextpnr
 cd nextpnr
-cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=/usr/local .
+cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=$HOME/local .
 make
-sudo make install
+make install
 ```
-
-Installing Yosys for Verilog synthesis:
+Note: As an alternative to NextPNR abovr, you could installed the older Arachne-PNR for place and route:
 ```
-export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/tcl-tk/lib"
-export CPPFLAGS="-I/usr/local/opt/tcl-tk/include"
-git clone https://github.com/cliffordwolf/yosys.git yosys
-cd yosys
+cd $HOME/local
+git clone https://github.com/YosysHQ/arachne-pnr.git arachne-pnr
+cd arachne-pnr
 make
-sudo make install
+make install PREFIX=$HOME/local
 ```
 
 If successful, you will be able to compile any of the example projects in the current repository by navigating to the project folder and executing the command `make`.
