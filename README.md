@@ -56,7 +56,10 @@ ACTION=="add", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE:="666"
 ```
 
 ### Installation on OSX
-Installation on Mac OSX is most easily achieved using Brew.
+
+These instructions were tested on OS X 13.2.1 (Ventura) running on a MacBook Pro with Apple M1 Max processor.
+
+Installation on Mac OSX is most easily achieved using the Brew package manager.
 
 First make sure to install Xcode from Apple's Mac App Store (https://apps.apple.com/us/app/xcode/id497799835) and then its command line tools
 ```
