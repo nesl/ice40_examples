@@ -7,9 +7,9 @@ FOOTPRINT = ct256
 # Files
 FILES = top.v
 
-.PHONY: all clean burn
+.PHONY: all clean burn timing
 
-all:
+all $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin:
 	# if build folder doesn't exist, create it
 	mkdir -p $(BUILD)
 	# synthesize using Yosys
@@ -19,8 +19,11 @@ all:
 	# Convert to bitstream using IcePack
 	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
 
-burn:
+burn: $(BUILD)/$(PROJ).bin
 	iceprog $(BUILD)/$(PROJ).bin
+
+timing: $(BUILD)/$(PROJ).asc
+	icetime -tmd hx$(DEVICE) $(BUILD)/$(PROJ).asc
 
 clean:
 	rm build/*
