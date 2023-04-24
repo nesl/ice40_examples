@@ -2,7 +2,7 @@
 This repository contains example projects targeting the Lattice iCE40 HX8K FGPA the IceStorm open-source synthesis toolchain. The examples target the [iCE40-HX8K breakout board](http://www.latticesemi.com/en/Products/DevelopmentBoardsAndKits/iCE40HX8KBreakoutBoard.aspx) (part # ICE40HX8K-B-EVN). Additionally, the examples can be easily adapted for the cheaper [iCEstick Evaluation Kit](https://www.latticesemi.com/icestick) which has a smaller FPGA. Both these boards are available for purchase from Lattice's website as well as fromm major electronic parts vendors such as Digi-Key, Mouser, Newark etc.
 
 ## Installing the required tools
-The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source IceStorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Zsh (https://www.sitepoint.com/zsh-commands-plugins-aliases-tools/) or Bash (https://whatbox.ca/wiki/Bash_Shell_Commands). However, if you do not wish to install the tools natively or are on a Windows machine then we have also provided a Virtual Machine image with a Linux/Ubuntu installation that you can run using VirtualBox.
+The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source IceStorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Zsh (https://www.sitepoint.com/zsh-commands-plugins-aliases-tools/) or Bash (https://whatbox.ca/wiki/Bash_Shell_Commands). However, if you do not wish to install the tools natively or are on a Windows machine then we have also provided a Virtual Machine image with a Linux/Ubuntu installation that you can run using VirtualBox. Alternatively, while we have not tried it yet, you could download a binary release of the [OSS CAD Suite](https://github.com/YosysHQ/oss-cad-suite-build).
 
 ### Installation on Linux
 These instructions are for installation on Ubuntu 14.04 or later. 
@@ -16,27 +16,27 @@ sudo apt-get install build-essential clang bison flex libreadline-dev \
 ```
 Installing the IceStorm toolchain:
 ```
-git clone https://github.com/cliffordwolf/icestorm.git icestorm
+git clone https://github.com/YosysHQ/icestorm.git icestorm
 cd icestorm
 make
 sudo make install
 ```
 
-Installing Arachne-PNR for place and route:
-
-```
-git clone https://github.com/cseed/arachne-pnr.git arachne-pnr
-cd arachne-pnr
-make
-sudo make install
-```
-
-Installing NextPNR (replacement of Arachne-PNR) for place and route:
+Installing NextPNR for place and route:
 ```
 git clone https://github.com/YosysHQ/nextpnr nextpnr
 cd nextpnr
 cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=/usr/local .
 make -j$(nproc)
+sudo make install
+```
+
+Note: As an alternative to NextPNR abovr, you could installed the older Arachne-PNR for place and route:
+```
+git clone https://github.com/YosysHQ/arachne-pnr.git arachne-pnr
+
+cd arachne-pnr
+make
 sudo make install
 ```
 
@@ -84,7 +84,7 @@ The rest of the installation requires downloading several git repositories and c
 Installing the IceStorm toolchain:
 ```
 cd $HOME/local
-git clone https://github.com/cliffordwolf/icestorm.git icestorm
+git clone https://github.com/YosysHQ/icestorm.git icestorm
 cd icestorm
 make
 make install PREFIX=$HOME/local
