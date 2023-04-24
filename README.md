@@ -5,7 +5,7 @@ This repository contains example projects targeting the Lattice iCE40 HX8K FGPA 
 The projects in this repository include a Makefile for easy compilation of the verilog and downloading of the bitstream to the FPGA. This Makefile depends on the open source IceStorm toolchain described at http://www.clifford.at/icestorm/. Instructions are provided at the previous address for installation of this toolchain for Mac OSX and Linux systems, but we have copied and expanded on these instructions here for convenience. For those unfamiliar with terminal programs, we recommend taking a look at basic commands for Zsh (https://www.sitepoint.com/zsh-commands-plugins-aliases-tools/) or Bash (https://whatbox.ca/wiki/Bash_Shell_Commands). However, if you do not wish to install the tools natively or are on a Windows machine then we have also provided a Virtual Machine image with a Linux/Ubuntu installation that you can run using VirtualBox. Alternatively, while we have not tried it yet, you could download a binary release of the [OSS CAD Suite](https://github.com/YosysHQ/oss-cad-suite-build).
 
 ### Installation on Linux
-These instructions are for installation on Ubuntu 14.04 or later. 
+These instructions are for installation on Ubuntu 14.04 or later, and will install relative to /usr/local.
 
 Installing prerequisites:
 ```
@@ -31,7 +31,7 @@ make -j$(nproc)
 sudo make install
 ```
 
-Note: As an alternative to NextPNR abovr, you could installed the older Arachne-PNR for place and route:
+Note: As an alternative to NextPNR above, you could install the older Arachne-PNR for place and route:
 ```
 git clone https://github.com/YosysHQ/arachne-pnr.git arachne-pnr
 
@@ -52,8 +52,11 @@ If successful, you will be able to compile any of the example projects by naviga
 
 Finally, create the file /etc/udev/rules.d/53-lattice-ftdi.rules with the following line in it. This will enable permissions for writing bitstreams to Lattice FPGA devices as a priveleged user:
 ```
-ACTION=="add", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE:="666"
+ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", MODE="0660", GROUP="plugdev", TAG+="uaccess"
 ```
+
+***Notes for Archlinux:*** just install [icestorm-git](https://aur.archlinux.org/packages/icestorm-git/), [arachne-pnr-git](https://aur.archlinux.org/packages/arachne-pnr-git/) and [yosys-git](https://aur.archlinux.org/packages/yosys-git/) from the Arch User Repository (no need to follow the install instructions above).
+
 
 ### Installation on OSX
 
@@ -98,7 +101,7 @@ cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=$HOME/local .
 make
 make install
 ```
-Note: As an alternative to NextPNR abovr, you could installed the older Arachne-PNR for place and route:
+Note: As an alternative to NextPNR above, you could install the older Arachne-PNR for place and route:
 ```
 cd $HOME/local
 git clone https://github.com/YosysHQ/arachne-pnr.git arachne-pnr
