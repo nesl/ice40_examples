@@ -79,7 +79,7 @@ After installing Brew, follow the following steps (these have been verified on O
 Install the dependencies
 ```
 brew install bison gawk pkg-config git mercurial graphviz python python3 libftdi0 libffi tcl-tk \
-  boost boost-python3 qt5 eigen yosys
+  boost boost-python3 qt5 eigen libusb libusb-compat yosys
 ```
 
 The rest of the installation requires downloading several git repositories and compiling the source:
